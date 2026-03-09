@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario</title>
+    <link rel="stylesheet" href="./stylef.css">
+    <link rel="icon" href="../assets/img/favicon.ico" type="image/x-icon">
+</head>
+
+<body class="intro">
+
+    <div class="navbar">
+        <img id="logo" src="../assets/img/Logo-Prexxa.png" alt="">
+    </div>
+
+    <div class="persona">
+
+        <div class="persona-fondo">
+
+            <h2 id="info-personal">Información personal</h2>
+
+            <div class="id">
+                <label for="id">Identificación</label>
+                <input min="0" step="any" name="Identificación" type="number" id="id"
+                    placeholder="Ingrese su número de identificación">
+                <div id="id-suggestions" class="suggestions"></div>
+            </div>
+
+            <div class="nombre">
+                <label for="nombre">Nombre</label>
+                <input type="text" name="Nombre" id="nombre" placeholder="" readonly required>
+            </div>
+
+            <style>
+                .suggestions {
+                    position: absolute;
+                    top: 0;
+                    width: 70%;
+                    z-index: 2;
+                }
+
+                .suggestions>.list {
+                    transform: translateY(100%);
+                    border: 0.1vw solid black;
+                    border-radius: 0.3vw;
+                    max-height: 15vw;
+                    overflow-y: auto;
+                    box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+                    font-size: 1vw;
+                    font-family: Nunito sans;
+                    background-color: white;
+                }
+
+                .suggestions .item {
+                    padding: .5rem .75rem;
+                    cursor: pointer;
+                }
+
+                .suggestions .item:hover,
+                .suggestions .item.active {
+                    background: #ebd5c0;
+                }
+
+                .suggestions .muted {
+                    padding: .5rem .75rem;
+                    color: #888;
+                    font-size: .9rem;
+                }
+
+                #nombre[readonly] {
+                    background: rgba(255, 255, 255, 0.06);
+                }
+            </style>
+
+
+            <div class="opcion-actividad">
+                <label for="actividad" id="activity">Actividad</label>
+                <select name="Actividad" id="actividad"></select>
+            </div>
+
+            <div class="login-button">
+                <a href="/login" class="admin-login-button" id="login-button">Acceso de Administrador</a>
+            </div>
+
+            <div class="login-button">
+                <a href="/mantenimiento" class="admin-login-button" id="login-button">Mantenimiento</a>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div class="opciones">
+
+        <button class="opcion-btn" data-page="1">1. Información básica</button>
+        <button class="opcion-btn" data-page="2">2. Información detallada</button>
+        <button class="opcion-btn" data-page="3">3. Calculadora</button>
+
+    </div>
+
+    <div id="nav-slot-v1"><button id="btn-siguiente">Siguiente</button></div>
+    <div id="nav-slot-v2"><button id="btn-volver">Volver</button></div>
+
+
+    <div id="vista1" class="vista">
+
+        <div id="submit-slot-v1"></div>
+        <div class="sede">
+
+            <label for="sede" id="sedes">Sede</label>
+            <select name="Sede" id="sede">
+                <option value="" selected disabled>Seleccione una sede</option>
+                <option value="Colombia-Antioquia-Sabaneta-SEDE-PX-1">Colombia-Antioquia-Sabaneta-SEDE-PX-1</option>
+                <option value="Colombia-Antioquia-La Estrella-SEDE-PX-1">Colombia-Antioquia-La Estrella-SEDE-PX-1
+                </option>
+            </select>
+
+        </div>
+
+
+        <div class="date-time">
+
+            <div class="fechaInicio">
+                <label for="fechaInicio">Fecha de inicio</label>
+                <input onkeydown="return false" onpaste="return false" name="Fecha Inicio" type="date" id="fechaInicio">
+            </div>
+
+            <!-- 1. Estas funciones js sirven para modificar la cantidad de días habiles donde puedo ingresar información-->
+            <script>
+                const ayer = new Date();
+                const hoy = new Date();
+                ayer.setDate(ayer.getDate() - 1);
+                hoy.setDate(hoy.getDate());
+                const initayer = ayer.toISOString().split('T')[0];
+                const inithoy = hoy.toISOString().split('T')[0];
+                document.getElementById("fechaInicio").setAttribute("min", initayer);
+                document.getElementById("fechaInicio").setAttribute("max", inithoy);
+            </script>
+
+            <div class="fechaFin">
+                <label for="fechaFin">Fecha final</label>
+                <input onkeydown="return false" onpaste="return false" name="Fecha Final" type="date" id="fechaFin">
+            </div>
+
+            <script>
+                const finayer = ayer.toISOString().split('T')[0];
+                const finhoy = hoy.toISOString().split('T')[0];
+                document.getElementById("fechaFin").setAttribute("min", finayer);
+                document.getElementById("fechaFin").setAttribute("max", finhoy);
+            </script>
+            </script>
+
+            <div class="horaInicio">
+                <label for="horaInicio">Hora de inicio</label>
+                <input name="Hora Inicio" type="time" id="horaInicio">
+            </div>
+
+            <div class="horaFin">
+                <label for="horaFin">Hora final</label>
+                <input name="Hora Final" type="time" id="horaFin">
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="vista2" class="vista">
+
+        <div class="noop">
+            <label for="op">No OP</label>
+            <input name="No. OP" id="op" type="text">
+        </div>
+
+        <div class="sci">
+            <label for="sci">SCI</label>
+            <select name="SCI Ref" id="sci">
+                <option value="" selected disabled>Seleccione SCI</option>
+            </select>
+        </div>
+
+        <div class="dr">
+            <label for="dr">Descripción referencia</label>
+            <input name="Descripción Referencia" id="dr" type="text" readonly>
+        </div>
+
+        <div class="estado-sci">
+            <label for="estado-sci">Estado SCI</label>
+            <select name="Estado SCI" id="estado-sci">
+                <option value="" selected disabled>Seleccione un estado</option>
+                <option value="En proceso">En proceso</option>
+                <option value="Finalizado">Finalizado</option>
+            </select>
+        </div>
+
+        <div class="ctpn">
+            <label for="ctpn">Ct PN</label>
+            <select name="CT Pn" id="ctpn">
+                <option value="" selected disabled>CT Pn</option>
+            </select>
+        </div>
+
+        <div class="maquina">
+            <label for="maquina">Máquina</label>
+            <select name="Máquina" id="maquina">
+                <option value="" selected disabled>Seleccione una máquina</option>
+            </select>
+        </div>
+
+        <div class="campo-cantidad">
+            <label for="campo-cantidad">Cantidad</label>
+            <input id="campo-cantidad" type="number" min="0" step="0.01" inputmode="numeric">
+        </div>
+
+        <div class="horprog">
+            <label for="horprog">Horario programado</label>
+            <select name="Horario" id="horprog">
+                <option value="" selected disabled>Seleccione un horario</option>
+                <option>Horario A (06:00 - 14:00)</option>
+                <option>Horario B (14:00 - 22:00)</option>
+                <option>Horario C (22:00 - 06:00)</option>
+                <option>Horario D (07:00 - 16:00)</option>
+                <option>Horario E (06:00 - 16:00)</option>
+                <option>Horario F (06:00 - 18:00)</option>
+                <option>Horario G (18:00 - 06:00)</option>
+                <option>Horario H (20:00 - 06:00)</option>
+                <option>Horario I (06:00 - 17:00)</option>
+                <option>Horario J (19:00 - 06:00)</option>
+                <option>Horario K (05:45 - 13:45)</option>
+                <option>Horario L (14:15 - 22:15)</option>
+                <option>Horario M (10:00 - 18:00)</option>
+                <option>Horario N (12:00 - 22:00)</option>
+                <option>Horario O (08:00 - 16:00)</option>
+            </select>
+        </div>
+
+        <div class="observacion">
+            <label for="observacion">Observación</label>
+            <select name="Observaciones" id="observacion">
+            </select>
+        </div>
+
+        <div id="fallo-maquina-container" class="oculto">
+            <label for="tiempo-fallo">Tiempo de fallo (minutos)</label>
+            <input type="number" id="tiempo-fallo" name="tiempo_fallo_minutos" min="1">
+            <p id="error-tiempo-fallo" class="error-message" style="color: red;"></p>
+        </div>
+
+        <button id="enviarFormulario" type="button">Enviar</button>
+    </div>
+
+    <div id="vista3" class="vista">
+
+        <div class="options">
+            <p onclick="validarYIr(this, 1)">1. Calculadora básica</p>
+            <p onclick="validarYIr(this, 2)">2. Rollos a Metros</p>
+            <p onclick="validarYIr(this, 3)">3. Etiquetas a Metros</p>
+            <p onclick="validarYIr(this, 4)">4. Metros a Etiquetas</p>
+        </div>
+
+        <div class="calculadora" id="calc1">
+
+            <div class="numeros">
+
+                <button id="uno" onclick="insertarNumero('1')">1</button>
+                <button id="dos" onclick="insertarNumero('2')">2</button>
+                <button id="tres" onclick="insertarNumero('3')">3</button>
+                <button id="cuatro" onclick="insertarNumero('4')">4</button>
+                <button id="cinco" onclick="insertarNumero('5')">5</button>
+                <button id="seis" onclick="insertarNumero('6')">6</button>
+                <button id="siete" onclick="insertarNumero('7')">7</button>
+                <button id="ocho" onclick="insertarNumero('8')">8</button>
+                <button id="nueve" onclick="insertarNumero('9')">9</button>
+                <button id="flecha-borrar">x</button>
+                <button id="cero" onclick="insertarNumero('0')">0</button>
+                <button id="igual" onclick="calcular()">=</button>
+
+            </div>
+
+            <div class="inputs">
+                <input min="0" type="number" id="num1" placeholder="Valor 1">
+                <input type="text" id="operador" maxlength="1" placeholder="+ - * /">
+                <input min="0" type="number" id="num2" placeholder="Valor 2">
+            </div>
+
+            <div id="resultado"></div>
+
+        </div>
+
+        <div class="calculadora" id="calc2" style="display:none;">
+
+            <h3 id="rm">Rollos a Metros</h3>
+
+            <div class="input-calc2">
+
+                <input type="number" id="rollos" placeholder="Rollos producidos">
+                <input type="number" id="avance" placeholder="Avance Real (cm)">
+                <input type="number" id="lineas" placeholder="Líneas">
+                <input type="number" id="etiquetas" placeholder="Etiquetas por rollo">
+                <button id="calcular2" onclick="calcularRollos()">Calcular</button>
+
+            </div>
+
+            <div id="resultado2">Resultado:</div>
+        </div>
+
+        <div class="calculadora" id="calc3" style="display:none;">
+
+
+
+            <h3 id="em">Etiquetas a Metros</h3>
+
+            <div class="input-calc3">
+
+                <input type="number" id="etiquetasTotal" placeholder="Número de etiquetas">
+                <input type="number" id="lineasEtiquetas" placeholder="Líneas">
+                <input type="number" id="avanceEtiquetas" placeholder="Avance Real (cm)">
+                <button id="calcular3" onclick="calcularEtiquetas()">Calcular</button>
+
+            </div>
+
+            <div id="resultado3">Resultado: </div>
+        </div>
+
+        <div class="calculadora" id="calc4" style="display:none;">
+
+
+
+            <h3 id="me">Metros a Etiquetas</h3>
+
+            <div class="input-calc4">
+
+                <input type="number" id="metrosTotal" placeholder="Número de metros">
+                <input type="number" id="lineasMetros" placeholder="Líneas">
+                <input type="number" id="avanceMetros" placeholder="Avance Real (cm)">
+                <button id="calcular4" onclick="calcularMetrosEtiquetas()">Calcular</button>
+
+            </div>
+
+            <div id="resultado4">Resultado: </div>
+        </div>
+
+    </div>
+
+
+
+</body>
+<script src="./script.js"></script>
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</html>

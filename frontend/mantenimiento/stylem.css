@@ -1,0 +1,304 @@
+@font-face {
+    font-family: 'Nunito sans';
+    src: url(../assets/fonts/NunitoSans-VariableFont_YTLC\,opsz\,wdth\,wght.ttf);
+}
+
+.container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2vw;
+    background-color: #f8fafc;
+}
+
+.navbar {
+    position: fixed;
+    width: 100%;
+    height: 60px;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #d9dfe4;
+    z-index: 5;
+    background-color: #ffffff;
+}
+
+#logo {
+    width: 100px;
+    z-index: 4;
+}
+
+a {
+    text-decoration: none;
+}
+
+#mant-back {
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 120px;
+    padding: 10px;
+    background-color: transparent;
+    color: #5f6772;
+    font-size: 15px;
+    font-family: 'Nunito sans';
+    border: none;
+    border-radius: 0.4vw;
+    cursor: pointer;
+    z-index: 5;
+}
+
+#arrow-left {
+    width: 20px;
+}
+
+#mant-editor {
+    margin-left: 2vw;
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+    width: 120px;
+    padding: 10px;
+    background-color: transparent;
+    color: #5f6772;
+    font-size: 15px;
+    font-family: 'Nunito sans';
+    border: none;
+    border-radius: 0.4vw;
+    cursor: pointer;
+    z-index: 5;
+}
+
+h1 {
+    margin-top: 80px;
+    font-size: 25px;
+    font-family: 'Nunito sans';
+}
+
+.titulo-cuadro {
+    grid-column: span 2;
+    font-size: 15px;
+    font-family: 'Nunito sans';
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.cuadro1 {
+    width: 1100px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #d9dfe4;
+    border-radius: 12px;
+    padding: 30px;
+    background-color: white;
+}
+
+.cuadro3 {
+    width: 1100px;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 30px;
+    background-color: white;
+    font-size: 10px;
+}
+
+/* Contenedores de campos con label */
+.mant-user,
+.mant-tipo-maquina,
+.mant-tipo-mantenimiento,
+.mant-paro,
+.mant-observacion {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mant-observacion {
+    grid-column: span 2;
+}
+
+/* Labels */
+.mant-user label,
+.mant-tipo-maquina label,
+.mant-tipo-mantenimiento label,
+.mant-paro label,
+.mant-observacion label {
+    font-size: 15px;
+    font-family: 'Nunito sans';
+    font-weight: 600;
+    color: #334155;
+}
+
+select,
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 7px;
+    font-size: 15px;
+    font-family: 'Nunito sans';
+    background: #ffffff;
+}
+
+#mant-observacion {
+    min-height: 5vh;
+    resize: vertical;
+    font-size: 15px;
+    font-family: 'Nunito sans';
+    text-align: justify;
+    background: #ffffff;
+    border: 0.1vw solid #e2e8f0;
+    border-radius: 0.4vw;
+    padding: 10px;
+}
+
+.estado-checkbox {
+    grid-column: span 1;
+    display: flex;
+    align-items: center;
+    margin-top: 1vw;
+}
+
+.estado-checkbox label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 15px;
+    font-family: 'Nunito sans';
+    cursor: pointer;
+    user-select: none;
+}
+
+.estado-checkbox input[type="checkbox"] {
+    width: auto;
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+.datetime-intervencion,
+.datetime-paro {
+    width: 1100px;
+    padding: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    background: white;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    font-family: 'Nunito sans';
+}
+
+.hora-paro-inicio,
+.hora-intervencion-inicio,
+.hora-intervencion-final,
+.hora-paro-final {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.hora-paro-inicio label,
+.hora-intervencion-inicio label,
+.hora-intervencion-final label,
+.hora-paro-final label {
+    font-size: 15px;
+    font-family: 'Nunito sans';
+    font-weight: 600;
+    color: #334155;
+}
+
+#label-inicio-intervencion,
+#label-final-intervencion,
+#label-inicio-paro,
+#label-final-paro {
+    margin-top: 5px;
+    font-size: 15px;
+}
+
+#mant-hora-paro-final,
+#mant-fecha-paro-final,
+#mant-hora-intervencion-final,
+#mant-fecha-intervencion-final {
+    width: 98%;
+}
+
+#mant-repuestos-list {
+    width: 1100px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 5px;
+    border-radius: 12px;
+    font-size: 10px;
+}
+
+.cuadro3 .titulo-cuadro {
+    grid-column: span 1;
+}
+
+#add-repuesto {
+    margin-top: 10px;
+    width: 100px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #c23e3e;
+    color: white;
+    font-size: 15px;
+    font-family: 'Nunito sans';
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#add-repuesto:hover {
+    background-color: #a03030;
+}
+
+.btn-eliminar-repuesto:hover {
+    background-color: #a03030;
+}
+
+/* ============================================
+   SAVE BUTTON
+   ============================================ */
+.guardar {
+    width: 1100px;
+    display: flex;
+    justify-content: flex-end;
+    margin-left: 50px;
+    padding-bottom: 30px;
+    margin-top: 10px;
+}
+
+#mant-guardar {
+    width: 150px;
+    height: 35px;
+    padding: 10px;
+    background-color: #ed6b07;
+    color: white;
+    font-size: 15px;
+    font-family: 'Nunito sans';
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

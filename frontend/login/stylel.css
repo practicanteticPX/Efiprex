@@ -1,0 +1,75 @@
+@font-face {
+    font-family: Nunito sans;
+    src: url("../assets/fonts/NunitoSans-VariableFont_YTLC\,opsz\,wdth\,wght.ttf");
+}
+
+.login-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-box {
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+    font-size: 1vw;
+    font-family: Nunito sans;
+    width: 40%;
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: white;
+    transition: opacity .25s ease;
+    z-index: 1;
+    border-radius: 1vw;
+    box-shadow: 0px 0px 15px 5px rgb(242, 242, 242);
+}
+
+#loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vw;
+}
+
+#username, #password {
+    padding: 0.5vw;
+    font-size: 1vw;
+    border: 1px solid #ccc;
+    border-radius: 0.5vw;
+    width: 20vw;
+}
+
+#username:focus, #password:focus {
+    outline: 0.1vw solid #ed6b07;
+    border: none;
+}
+
+#submit-button {
+    padding: 0.5vw;
+    font-size: 1vw;
+    background: #ed6b07;
+    border-radius: 0.5vw;
+    width: 21vw;
+    border: none;
+}
+
+#link-log-out {
+    text-decoration: none;
+    color: black;
+    font-size: 1vw;
+    font-family: Nunito sans;
+}

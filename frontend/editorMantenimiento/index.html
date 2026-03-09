@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor de Mantenimiento</title>
+    <link rel="stylesheet" href="stylee.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <img id="logo" src="../assets/img/Logo-Prexxa.png" alt="Logo Prexxa">
+    </div>
+
+    <a href="/mantenimiento">
+        <button id="mant-back">
+            <svg id="arrow-left" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                fill="none" stroke="#5f6772" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M5 12l14 0" />
+                <path d="M5 12l6 6" />
+                <path d="M5 12l6 -6" />
+            </svg>
+            Regresar
+        </button>
+    </a>
+
+    <h2 id="titulo">Editor de Paros e Intervenciones</h2>
+
+    <h3>Lista de Paros</h3>
+    <!-- Tabla de Paros -->
+    <div class="table-shell">
+        
+        <table id="tabla-paros">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Cédula</th>
+                    <th>Tipo Máquina</th>
+                    <th>Paro Máquina</th>
+                    <th>Fecha Paro Inicio</th>
+                    <th>Hora Paro Inicio</th>
+                    <th>Fecha Paro Final</th>
+                    <th>Hora Paro Final</th>
+                    <th>Estado</th>
+                    <th>Fecha Registro</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-paros-body">
+                <!-- Se carga dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal de Intervenciones -->
+    <div id="modal-intervenciones" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Intervenciones del Paro</h2>
+                <button id="btn-cerrar-modal" class="btn-cerrar">&times;</button>
+            </div>
+
+            <div id="info-paro" class="info-paro">
+                <!-- Se llena dinámicamente -->
+            </div>
+
+            <div class="modal-actions">
+                <button id="btn-agregar-intervencion" class="btn-agregar">+ Agregar Intervención</button>
+            </div>
+
+            <table id="tabla-intervenciones">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tipo Mantenimiento</th>
+                        <th>Usuario Intervención</th>
+                        <th>Observación</th>
+                        <th>Repuestos</th>
+                        <th>Fecha Int. Inicio</th>
+                        <th>Hora Int. Inicio</th>
+                        <th>Fecha Int. Final</th>
+                        <th>Hora Int. Final</th>
+                        <th>Fecha Registro</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-intervenciones-body">
+                    <!-- Se carga dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal para Agregar Intervención -->
+    <div id="modal-agregar" class="modal">
+        <div class="modal-content modal-form">
+            <div class="modal-header">
+                <h2>Agregar Nueva Intervención</h2>
+                <button id="btn-cerrar-agregar" class="btn-cerrar">&times;</button>
+            </div>
+
+            <form id="form-agregar-intervencion" class="form-agregar">
+                <div class="form-group">
+                    <label for="add-usuario">Usuario *</label>
+                    <select id="add-usuario">
+                        <option value="">Seleccionar usuario</option>
+                        <!-- Se carga dinámicamente desde la base de datos -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="add-tipo-mantenimiento">Tipo de Mantenimiento *</label>
+                    <select id="add-tipo-mantenimiento">
+                        <option value="">Seleccionar</option>
+                        <!-- Se carga dinámicamente desde la base de datos -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="add-observacion">Observación</label>
+                    <textarea id="add-observacion" rows="3" placeholder="Descripción de la intervención"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Repuestos Usados</label>
+                    <div id="add-repuestos-list">
+                        <input type="text" class="add-repuesto" placeholder="Repuesto usado">
+                    </div>
+                    <button type="button" id="btn-add-repuesto" class="btn-add-repuesto">+ Agregar Repuesto</button>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="add-fecha-inicio">Fecha Intervención Inicio</label>
+                        <input type="date" id="add-fecha-inicio">
+                    </div>
+                    <div class="form-group">
+                        <label for="add-hora-inicio">Hora Intervención Inicio</label>
+                        <input type="time" id="add-hora-inicio">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="add-fecha-final">Fecha Intervención Final</label>
+                        <input type="date" id="add-fecha-final">
+                    </div>
+                    <div class="form-group">
+                        <label for="add-hora-final">Hora Intervención Final</label>
+                        <input type="time" id="add-hora-final">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" id="btn-guardar-intervencion" class="btn-guardar">Guardar
+                        Intervención</button>
+                    <button type="button" id="btn-cancelar-agregar" class="btn-cancelar">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./script.js"></script>
+</body>
+
+</html>

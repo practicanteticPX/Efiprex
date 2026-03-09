@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mantenimiento</title>
+    <link rel="stylesheet" href="stylem.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar">
+
+            <a href="/formulario">
+                <button id="mant-back">
+                    <svg id="arrow-left" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="#5f6772" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M5 12l14 0" />
+                        <path d="M5 12l6 6" />
+                        <path d="M5 12l6 -6" />
+                    </svg>
+                    Regresar
+                </button>
+            </a>
+
+            <img id="logo" src="../assets/img/Logo-Prexxa.png" alt="">
+
+            <a href="/editor">
+                <button id="mant-editor">Editor</button>
+            </a>
+
+        </div>
+
+
+        <h1>Bitácora de mantenimiento</h1>
+
+        <!-- Jorge: 1039472274 Bedoya Pineda Jorge Andres
+        Mauricio: 71703577 Alvarez Zapata Mauricio Alberto
+        -->
+
+        <div class="cuadro1">
+
+            <div class="mant-user">
+                <label for="mant-user">Usuario</label>
+                <select id="mant-user">
+                    <option value="">Seleccionar usuario</option>
+                    <!-- Se carga dinámicamente desde la base de datos -->
+                </select>
+            </div>
+
+            <div class="mant-tipo-maquina">
+                <label for="mant-tipo-maquina">Tipo de máquina</label>
+                <select id="mant-tipo-maquina">
+                    <option value="">Seleccionar tipo</option>
+                </select>
+            </div>
+
+            <div class="mant-tipo-mantenimiento">
+                <label for="mant-tipo-mantenimiento">Tipo de mantenimiento</label>
+                <select id="mant-tipo-mantenimiento">
+                    <option value="">Seleccionar tipo</option>
+                    <!-- Se carga dinámicamente desde la base de datos -->
+                </select>
+            </div>
+
+            <div class="mant-paro">
+                <label for="mant-paro">Paro de máquina</label>
+                <select id="mant-paro">
+                    <option value="">Selecciona</option>
+                    <option value="si">Sí</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+
+            <div class="mant-observacion">
+                <label for="mant-observacion">Observación</label>
+                <textarea id="mant-observacion" rows="3"></textarea>
+            </div>
+
+            <div class="estado-checkbox">
+                <label for="mant-finalizado">
+                    <input type="checkbox" id="mant-finalizado">
+                    Mantenimiento finalizado
+                </label>
+            </div>
+
+        </div>
+
+        <div class="datetime-intervencion">
+            <h2 class="titulo-cuadro">Intervención</h2>
+            <div class="hora-intervencion-inicio">
+                <label for="mant-fecha-intervencion-inicio">Fecha inicial de intervención</label>
+                <input id="mant-fecha-intervencion-inicio" type="date">
+                <label for="mant-hora-intervencion-inicio" id="label-inicio-intervencion">Hora inicial de
+                    intervención</label>
+                <input id="mant-hora-intervencion-inicio" type="time">
+            </div>
+            <div class="hora-intervencion-final">
+                <label for="mant-fecha-intervencion-final">Fecha final de intervención</label>
+                <input id="mant-fecha-intervencion-final" type="date">
+                <label for="mant-hora-intervencion-final" id="label-final-intervencion">Hora final de
+                    intervención</label>
+                <input id="mant-hora-intervencion-final" type="time">
+            </div>
+        </div>
+
+        <div class="datetime-paro">
+            <h2 class="titulo-cuadro">Paro</h2>
+            <div class="hora-paro-inicio">
+                <label for="mant-fecha-paro-inicio">Fecha inicial de paro</label>
+                <input id="mant-fecha-paro-inicio" type="date">
+                <label for="mant-hora-paro-inicio" id="label-inicio-paro">Hora inicial de paro</label>
+                <input id="mant-hora-paro-inicio" type="time">
+            </div>
+            <div class="hora-paro-final">
+                <label for="mant-fecha-paro-final">Fecha final de paro</label>
+                <input id="mant-fecha-paro-final" type="date">
+                <label for="mant-hora-paro-final" id="label-final-paro">Hora final de paro</label>
+                <input id="mant-hora-paro-final" type="time">
+            </div>
+        </div>
+
+        <div class="cuadro3" id="cuadro-repuestos">
+
+            <div id="mant-repuestos-list">
+                <h2 class="titulo-cuadro">Repuestos usados</h2>
+                <input type="text" id="mant-repuesto" class="mant-repuesto" placeholder="Repuesto">
+            </div>
+            <button type="button" id="add-repuesto">Agregar</button>
+        </div>
+
+        <div class="guardar">
+            <button id="mant-guardar" type="button">Guardar registro</button>
+        </div>
+
+    </div>
+
+</body>
+<script src="./script.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</html>

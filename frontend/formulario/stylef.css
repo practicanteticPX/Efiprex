@@ -1,0 +1,922 @@
+@font-face {
+    font-family: Sans medium;
+    src: url(../assets/fonts/InstrumentSans_Condensed-Medium.ttf);
+}
+
+@font-face {
+    font-family: Sans regular;
+    src: url(../assets/fonts/InstrumentSans_Condensed-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'Nunito sans';
+    src: url(../assets/fonts/NunitoSans-VariableFont_YTLC\,opsz\,wdth\,wght.ttf);
+}
+
+
+/*------------------------------------------------------------------------------------------------------*/
+/* ===== MODO INTRO: .persona ocupa toda la pantalla, centrado ===== */
+body.intro {
+    overflow: hidden;
+}
+
+body.intro .persona {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    transition: opacity .25s ease;
+    z-index: 1;
+}
+
+body.intro .persona .persona-fondo {
+    width: 70%;
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: white;
+    transition: opacity .25s ease;
+    z-index: 1;
+    border-radius: 1vw;
+    box-shadow: 0px 0px 15px 5px rgb(242, 242, 242);
+}
+
+
+body.intro .persona>* {
+    max-width: min(560px, 92vw);
+    width: 100%;
+}
+
+body.intro #info-personal {
+    text-align: center;
+    margin-left: -0.5vw;
+    color: #ed6b07;
+}
+
+
+body.intro .persona .persona-fondo label {
+    width: 70%;
+    font-size: 1.2vw;
+    font-weight: 600;
+}
+
+body.intro .persona .persona-fondo #id {
+    pointer-events: fill;
+}
+
+.id {
+    margin-top: 5vw;
+}
+
+.nombre {
+    margin-top: 3vw;
+}
+
+.opcion-actividad {
+    margin-top: 4vw;
+}
+
+body.intro .persona .persona-fondo .login-button #login-button {
+    text-decoration: none;
+    font-size: 1vw;
+    font-family: Nunito sans;
+    color: black;
+    display: block;
+}
+
+#login-button {
+    display: none;
+}
+
+#id {
+    pointer-events: none;
+}
+
+body.intro .persona .persona-fondo #activity {
+    font-size: 1.2vw;
+}
+
+body.intro .persona .persona-fondo input {
+    font-size: 1vw;
+}
+
+/*------------------------------------------------------------------------------------------------------*/
+
+.formulario {
+    position: absolute;
+    width: 100%;
+    min-height: 100vh;
+    top: 0;
+    left: 0;
+}
+
+.navbar {
+    position: absolute;
+    width: 100%;
+    height: 5vw;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 5;
+}
+
+#logo {
+    width: 10vw;
+    z-index: 4;
+}
+
+.persona {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.persona-fondo {
+    position: absolute;
+    width: 26vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color: #ebd5c0;
+    transition: opacity .25s ease;
+}
+
+#info-personal {
+    margin-left: 4vw;
+    width: 70%;
+    font-size: 2vw;
+    font-family: Nunito sans;
+    color: black;
+}
+
+.persona input {
+    width: 70%;
+    padding: 0.5vw;
+    border: none;
+    border-bottom: 0.1vw solid black;
+    background: transparent;
+    color: black;
+    font-size: 1.2vw;
+    font-family: Nunito sans;
+}
+
+.persona label {
+    margin-top: -8vw;
+    width: 70%;
+}
+
+/* 
+
+.persona label {
+    position: relative;
+    margin-top: -3.3vw;
+    transition: transform 0.3s ease, color 0.3s ease;
+    width: 60%;
+}
+
+.persona input:focus + label,
+.persona input:not(:placeholder-shown) + label {
+    transform: translateY(-2.5vw);
+    color: #6c4eb6;
+    font-size: 1vw;
+    font-weight: 600;
+} */
+
+.persona input:focus {
+    border-bottom: 0.2vw solid black;
+    outline: none;
+}
+
+.id,
+.nombre {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5vw;
+    color: black;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+}
+
+.opcion-actividad {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5vw;
+}
+
+#actividad {
+    width: 70%;
+    background: transparent;
+    color: black;
+    font-size: 1.2vw;
+    font-family: Nunito sans;
+    padding: 0.5vw 1vw;
+    border: none;
+    border-bottom: 0.1vw solid black;
+    outline: none;
+}
+
+.opciones {
+    position: absolute;
+    top: 7vw;
+    left: 31vw;
+    width: 57vw;
+    display: flex;
+    justify-content: space-around;
+    gap: 2vw;
+    background-color: #ebd5c0;
+    border-radius: 0.3vw;
+    padding: 1vw;
+}
+
+.opcion-btn {
+    background: none;
+    border: none;
+    font-size: 1.2vw;
+    font-family: Nunito sans;
+    cursor: pointer;
+    border-bottom: 0.2vw solid transparent;
+}
+
+/* Cuando está activo */
+.opcion-btn.activo {
+    border-bottom: 0.2vw solid black;
+    font-weight: bold;
+}
+
+.vista {
+    display: none;
+}
+
+#vista1 {
+    display: block;
+}
+
+.sede {
+    position: absolute;
+    top: 13.7vw;
+    left: 31vw;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 0.5vw;
+}
+
+#activity,
+#sedes {
+    color: black;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+    font-weight: 500;
+}
+
+#sede {
+    width: 58vw;
+    background: transparent;
+    color: black;
+    font-size: 1.2vw;
+    font-family: Nunito sans;
+    padding: 0.5vw 1vw;
+    border: none;
+    border-bottom: 0.1vw solid black;
+    outline: none;
+}
+
+.date-time {
+    position: absolute;
+    top: 23vw;
+    left: 31vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 5vw;
+    justify-items: center;
+    align-items: center;
+    border-radius: 1vw;
+}
+
+.fechaInicio {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vw;
+    color: black;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+}
+
+.fechaInicio input {
+    background: transparent;
+    border: none;
+    border-bottom: 0.1vw solid black;
+    width: 25.5vw;
+    font-size: 1.2vw;
+    font-family: Nunito sans;
+    color: black;
+    outline: none;
+}
+
+.fechaFin {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vw;
+    color: black;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+}
+
+.fechaFin input {
+    background: transparent;
+    border: none;
+    border-bottom: 0.1vw solid black;
+    width: 25.5vw;
+    font-size: 1.2vw;
+    font-family: Nunito sans;
+    color: black;
+    outline: none;
+}
+
+.horaInicio {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vw;
+    color: black;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+}
+
+.horaInicio input {
+    background: transparent;
+    border: none;
+    border-bottom: 0.1vw solid black;
+    width: 25.5vw;
+    font-size: 1.2vw;
+    font-family: Nunito sans;
+    color: black;
+    outline: none;
+}
+
+.horaFin {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vw;
+    color: black;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+}
+
+.horaFin input {
+    background: transparent;
+    border: none;
+    border-bottom: 0.1vw solid black;
+    width: 25.5vw;
+    font-size: 1.2vw;
+    font-family: Nunito sans;
+    color: black;
+    outline: none;
+}
+
+option {
+    appearance: none;
+    color: black;
+}
+
+option:hover,
+option:checked {
+    background: #ed6b07;
+    color: #fff;
+}
+
+/* -------------------------------------------------------------------- */
+
+
+#vista2>div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vw;
+    font-family: Nunito sans;
+    font-size: 1.2vw;
+}
+
+#vista2 input,
+#vista2 select {
+    outline: none;
+    /* border: none;
+    border-bottom: 0.1vw solid black; */
+    border: none;
+    border-bottom: 0.1vw solid black;
+    font-size: 1.2vw;
+}
+
+.noop {
+    position: absolute;
+    width: 25vw;
+    top: 11.3vw;
+    left: 31vw;
+}
+
+.sci {
+    position: absolute;
+    width: 25vw;
+    top: 11.3vw;
+    left: 65vw;
+}
+
+.dr {
+    position: absolute;
+    width: 59vw;
+    top: 17vw;
+    left: 31vw;
+}
+
+.estado-sci {
+    position: absolute;
+    width: 25vw;
+    top: 22.5vw;
+    left: 31vw;
+}
+
+.ctpn {
+    position: absolute;
+    width: 25vw;
+    top: 28vw;
+    left: 31vw;
+}
+
+.maquina {
+    position: absolute;
+    width: 25vw;
+    top: 28vw;
+    left: 65vw;
+}
+
+.campo-cantidad {
+    position: absolute;
+    width: 25vw;
+    top: 22.5vw;
+    left: 65vw;
+}
+
+.horprog {
+    position: absolute;
+    width: 25vw;
+    top: 34vw;
+    left: 31vw;
+}
+
+.observacion {
+    position: absolute;
+    width: 25vw;
+    top: 34vw;
+    left: 65vw;
+}
+
+#op,
+#sci,
+#dr,
+#estado-sci,
+#ctpn,
+#maquina,
+#horprog,
+#observacion {
+    font-family: Nunito sans;
+}
+
+/* ---------------------------------------------------------------- */
+
+.options {
+    position: absolute;
+    width: 60vw;
+    display: flex;
+    justify-content: space-around;
+    top: 13vw;
+    left: 31vw;
+    color: black;
+    font-size: 1.2vw;
+    font-family: Nunito sans;
+    background-color: #ebd5c0;
+    border-radius: 0.3vw;
+}
+
+.options p {
+    display: inline-block;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 1.2vw;
+    font-family: Nunito sans;
+    cursor: pointer;
+    border-bottom: 0.2vw solid transparent;
+    user-select: none;
+}
+
+
+/* Cuando está activo */
+.options p.activo {
+    border-bottom: 0.2vw solid black;
+    font-weight: bold;
+}
+
+.numeros {
+    position: absolute;
+    top: 20vw;
+    left: 31vw;
+    display: grid;
+    grid-template-columns: repeat(3, 60px);
+    grid-gap: 2.5vw;
+    justify-content: center;
+}
+
+.numeros button {
+    border-radius: 5px;
+    text-align: center;
+    padding: 15px 0;
+    margin: 0;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+    cursor: pointer;
+    user-select: none;
+    border: none;
+    background-color: transparent;
+    color: black;
+}
+
+.numeros button:hover {
+    background: #ebd5c0;
+}
+
+/* Estilo cuando la tecla está activa */
+.numeros button.kflash {
+    outline: none1;
+    background: #ebd5c0;
+    transform: translateY(1px);
+    transition: background 120ms, transform 60ms;
+}
+
+
+.inputs {
+    position: absolute;
+    top: 25.5vw;
+    left: 60vw;
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+}
+
+.inputs input {
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+    width: 20vw;
+    border: none;
+    border-bottom: 0.1vw solid black;
+    outline: none;
+}
+
+
+#resultado {
+    position: absolute;
+    width: 40vw;
+    top: 39vw;
+    left: 60vw;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+}
+
+#rm {
+    position: absolute;
+    top: 20vw;
+    left: 31vw;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+}
+
+.input-calc2 {
+    position: absolute;
+    top: 26vw;
+    left: 31vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2vw;
+    align-items: center;
+}
+
+.input-calc2>input {
+    width: 16.5vw;
+    border: none;
+    border-bottom: 0.1vw solid black;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+    outline: none;
+}
+
+#calcular2 {
+    position: absolute;
+    top: 10vw;
+    border-radius: 0.3vw;
+    border: 0.1vw solid black;
+    padding: 12px 16px;
+    color: black;
+    font-size: 1.5vw;
+    font-family: Sans regular;
+    cursor: pointer;
+}
+
+#resultado2 {
+    position: absolute;
+    top: 42vw;
+    left: 31vw;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+    color: black;
+}
+
+#em {
+    position: absolute;
+    top: 20vw;
+    left: 31vw;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+}
+
+.input-calc3 {
+    position: absolute;
+    top: 26vw;
+    left: 31vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2vw;
+    align-items: center;
+}
+
+.input-calc3>input {
+    width: 16.5vw;
+    border: none;
+    border-bottom: 0.1vw solid black;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+    outline: none;
+}
+
+#calcular3 {
+    position: absolute;
+    top: 10vw;
+    border-radius: 0.3vw;
+    border: 0.1vw solid black;
+    padding: 12px 16px;
+    color: black;
+    font-size: 1.5vw;
+    font-family: Sans regular;
+    cursor: pointer;
+}
+
+#resultado3 {
+    position: absolute;
+    top: 42vw;
+    left: 31vw;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+    color: black;
+}
+
+#me {
+    position: absolute;
+    top: 20vw;
+    left: 31vw;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+}
+
+.input-calc4 {
+    position: absolute;
+    top: 26vw;
+    left: 31vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2vw;
+    align-items: center;
+}
+
+.input-calc4>input {
+    width: 16.5vw;
+    border: none;
+    border-bottom: 0.1vw solid black;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+    outline: none;
+}
+
+#calcular4 {
+    position: absolute;
+    top: 10vw;
+    border-radius: 0.3vw;
+    border: 0.1vw solid black;
+    padding: 12px 16px;
+    color: black;
+    font-size: 1.5vw;
+    font-family: Sans regular;
+    cursor: pointer;
+}
+
+#resultado4 {
+    position: absolute;
+    top: 42vw;
+    left: 31vw;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+    color: black;
+}
+
+#enviarFormulario {
+    position: absolute;
+    width: 15vw;
+    top: 44vw;
+    right: 31vw;
+    font-size: 1.2vw;
+    font-family: Nunito sans;
+    border-radius: 0.3vw;
+    border: none;
+    background: #ed6b07;
+    padding: 0.5vw;
+    cursor: pointer;
+}
+
+.swal2-popup {
+    font-family: Nunito sans;
+    color: #ed6b07;
+
+}
+
+.is-invalid {
+
+    border-bottom: 0.2vw solid #e11d48 !important;
+}
+
+.error-text {
+    margin-top: -0.5vw;
+    font-size: 0.8vw;
+    color: #b91c1c;
+}
+
+.opcion-btn.oculta {
+    display: none !important;
+}
+
+/* contenedor de un campo bloqueado (el <div> que envuelve el input/select) */
+.campo-bloqueado {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* mini mensaje debajo del campo bloqueado */
+.campo-bloqueado .bloqueo-hint {
+    display: block;
+    margin-top: -0.5vw;
+    font-size: 0.8vw;
+    color: #b45309;
+    /* ámbar */
+}
+
+/* al pasar el mouse, sube un poco la opacidad para indicar que "algo explica" */
+.campo-bloqueado:hover {
+    opacity: 0.75;
+}
+
+.option-button {
+    background-color: #ebd5c0;
+    border: 0.1vw solid black;
+    border-radius: 0.3vw;
+    padding: 1vw;
+}
+
+#btn-siguiente {
+    position: absolute;
+    top: 44vw;
+    left: 85vw;
+    width: 10vw;
+    height: 2.5vw;
+    background-color: #ed6b07;
+    border-radius: 0.3vw;
+    font-size: 1vw;
+    font-family: Nunito sans;
+    cursor: pointer;
+}
+
+#btn-volver {
+    position: absolute;
+    top: 44vw;
+    left: 31vw;
+    width: 10vw;
+    height: 2.5vw;
+    background-color: #ed6b07;
+    border-radius: 0.3vw;
+    font-size: 1vw;
+    font-family: Nunito sans;
+    cursor: pointer;
+}
+
+/* El contenedor del input OP */
+.noop {
+    position: absolute;
+    /* ya lo tienes */
+}
+
+/* El contenedor que crea el JS (#op-suggestions) */
+#op-suggestions {
+    position: absolute !important;
+    left: 0;
+    right: 0;
+    top: calc(100% + 0.4vw);
+    background: #fff;
+    border: 0.1vw solid #d1d5db;
+    border-radius: 0.4vw;
+    box-shadow: 0 0.6vw 1.8vw rgba(0, 0, 0, 0.08);
+    z-index: 9999;
+    max-height: 18vw;
+    overflow-y: auto;
+    height: auto !important;
+    /* evita alturas fijas */
+    padding: 0 !important;
+    /* sin padding extra */
+    margin: 0 !important;
+    /* sin márgenes extra */
+}
+
+/* Lista interna SIN márgenes/paddings “misteriosos” */
+#op-suggestions .sugg-list {
+    display: block;
+    margin: 0 !important;
+    padding: 0.2vw 0 !important;
+}
+
+/* Cada ítem */
+#op-suggestions .sugg-item {
+    padding: 0.6vw 0.8vw;
+    font-size: 1.1vw;
+    line-height: 1.4;
+    color: #111827;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Hover/activo */
+#op-suggestions .sugg-item:hover,
+#op-suggestions .sugg-item.active {
+    background: #ed6b07;
+    color: #fff;
+}
+
+/* Mensaje vacío */
+#op-suggestions .sugg-muted {
+    padding: 0.6vw 0.8vw;
+    color: #6b7280;
+    font-style: italic;
+    pointer-events: none;
+}
+
+/* (Opcional) scrollbar */
+#op-suggestions::-webkit-scrollbar {
+    width: 0.6vw;
+}
+
+#op-suggestions::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 1vw;
+}
+
+#fallo-maquina-container {
+    display: block;
+    position: absolute;
+    top: 40vw;
+    left: 77vw;
+
+}
+
+#tiempo-fallo {
+    width: 12vw;
+    padding: 0.5vw;
+    border: none;
+    border-bottom: 0.1vw solid black;
+    background: transparent;
+    color: black;
+    font-size: 1.2vw;
+    font-family: Nunito sans;
+}
+
+.oculto {
+    display: none !important;
+}

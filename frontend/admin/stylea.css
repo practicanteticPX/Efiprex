@@ -1,0 +1,652 @@
+@font-face {
+    font-family: Nunito sans;
+    src: url(../assets/fonts/NunitoSans-VariableFont_YTLC\,opsz\,wdth\,wght.ttf);
+}
+
+.navbar {
+    position: absolute;
+    width: 100%;
+    height: 5vw;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#logo {
+    width: 10vw;
+    z-index: 2;
+}
+
+#link-log-out {
+    position: absolute;
+    top: 1vw;
+    right: 2vw;
+    padding: 10px 20px;
+    font-size: 0.8vw;
+    font-family: Nunito sans;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    background-color: #e74c3c;
+    color: white;
+    transition: all 0.2s ease-in-out;
+}
+
+#log-out {
+    background: transparent;
+    border: none;
+    font-size: 0.8vw;
+    font-family: Nunito sans;
+    cursor: pointer;
+}
+#titulo {
+    position: absolute;
+    top: 5vw;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-family: Nunito sans;
+    font-size: 1.5vw;
+}
+
+#datepicker {
+    position: absolute;
+    top: 10vw;
+    right: 10vw;
+    cursor: pointer;
+    width: 15%;
+    height: 2.5vw;
+    font-family: Nunito sans;
+    font-size: 1vw;
+    outline: none;
+    text-indent: 1vw;
+    border-radius: 0.3vw;
+    border: 0.1vw solid black;
+}
+
+#q {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    left: 1vw;
+    top: 10vw;
+    width: 25%;
+    height: 2.5vw;
+    font-family: Nunito sans;
+    font-size: 1vw;
+    text-indent: 3vw;
+    outline: none;
+    border-radius: 0.3vw;
+    border: 0.1vw solid black;
+}
+
+#filterById {
+    position: absolute;
+    top: 10vw;
+    left: 27vw;
+    cursor: pointer;
+    width: 15%;
+    height: 2.5vw;
+    font-family: Nunito sans;
+    font-size: 1vw;
+    outline: none;
+    text-indent: 1vw;
+    border-radius: 0.3vw;
+    border: 0.1vw solid black;
+}
+
+#filterByNoOp {
+    position: absolute;
+    top: 10vw;
+    left: 43vw;
+    cursor: pointer;
+    width: 15%;
+    height: 2.5vw;
+    font-family: Nunito sans;
+    font-size: 1vw;
+    outline: none;
+    text-indent: 1vw;
+    border-radius: 0.3vw;
+    border: 0.1vw solid black;
+}
+
+#filtroSede {
+    position: absolute;
+    top: 10vw;
+    left: 59vw;
+    cursor: pointer;
+    width: 15%;
+    height: 2.7vw;
+    font-family: Nunito sans;
+    font-size: 1vw;
+    outline: none;
+    text-indent: 1vw;
+    border-radius: 0.3vw;
+    border: 0.1vw solid black;
+}
+
+#limpiarfiltros {
+    position: absolute;
+    top: 10vw;
+    right: 1vw;
+    cursor: pointer;
+    width: 8%;
+    height: 2.5vw;
+    font-family: Nunito sans;
+    font-size: 1vw;
+    outline: none;
+    border-radius: 0.3vw;
+    border: 0.1vw solid black;
+    background: #ed6b07;
+}
+
+#lupa {
+    position: absolute;
+    top: 10.4vw;
+    left: 2%;
+    width: 2vw;
+}
+
+.pager {
+    position: absolute;
+    top: 15vw;
+    left: 0;
+    width: 100%;
+    font-size: 1vw;
+    font-family: Nunito sans;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.botones {
+    margin-left: 1vw;
+}
+
+#x-pag {
+    margin-right: 1vw;
+}
+
+#prev,
+#next {
+    cursor: pointer;
+    padding: 0.6vw;
+    border: 0.1vw solid black;
+    border-radius: 0.3vw;
+    background: #ed6b07;
+    font-size: 1vw;
+    font-family: Nunito sans;
+}
+
+#pageSize {
+    font-size: 1vw;
+    font-family: Nunito sans;
+}
+
+#lista {
+    width: 80%;
+    height: fit-content;
+
+}
+
+.item {
+    display: flex;
+    gap: 3vw;
+    border-radius: 0.3vw;
+    padding: 0.5vw;
+    font-size: 1vw;
+    font-family: Nunito sans;
+}
+
+html,
+body {
+    overflow-x: hidden;
+}
+
+.table-shell {
+    position: absolute;
+    top: 18vw;
+    width: 100%;
+    bottom: 0;
+    border-radius: 0.5vw;
+    overflow-x: scroll;
+    overflow-y: auto;
+}
+
+.tabla {
+    font-size: 0.8vw;
+    font-family: Nunito sans;
+    border-collapse: collapse;
+    width: max-content;
+}
+
+.tabla th,
+.tabla td {
+    padding: 8px 10px;
+    border: 0.1vw solid #e5e7eb;
+    white-space: nowrap;
+}
+
+.tabla thead th {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    background: #ed6b07;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
+}
+
+.tabla th,
+.tabla td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.tabla td {
+    cursor: pointer;
+}
+
+.tabla th {
+    background-color: #ed6b07;
+    position: sticky;
+}
+
+.tabla tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+.tabla tr:hover {
+    background-color: #eef2ff;
+}
+
+#act-columna {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.sticky-col {
+  position: -webkit-sticky; /* Para compatibilidad con Safari */
+  position: sticky;
+  background-color: #ffffff; /* ¡MUY IMPORTANTE! Evita que se vea el texto de atrás */
+  z-index: 2;
+  box-shadow: 2px 0 3px -2px rgba(0, 0, 0, 0.2);
+}
+
+/* Columna ID */
+.id-col {
+  width: 60px;
+  min-width: 60px;
+  left: 0;
+}
+
+/* Columna Cédula */
+.cc-col {
+  width: 120px;
+  min-width: 120px;
+  left: 60px;
+}
+
+/* Columna Nombres */
+.name-col {
+  width: 250px;
+  min-width: 250px;
+  left: 180px;
+}
+
+.tabla th.sticky-col {
+  z-index: 4;
+  background-color: #ed6b07;
+}
+
+/* Estilo para la primera celda no-fija para que no se superponga la sombra */
+.table th:nth-child(4),
+.table td:nth-child(4) {
+  z-index: 1;
+}
+
+#edit-logo,
+#delete-logo {
+    width: 1.5vw;
+}
+
+#edit-boton,
+#delete-boton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2vw;
+    height: 2vw;
+    cursor: pointer;
+    border-radius: 0.3vw;
+    border: none;
+    border: 0.1vw solid gray;
+    background: yellow;
+}
+
+#delete-boton {
+    background: red;
+}
+
+/* ----------------------------------------------------------------------------- */
+
+td.ro {
+    background: #fafafa;
+    color: #666;
+}
+
+td.selected {
+    outline: 2px solid #94a3b8;
+}
+
+td.editing {
+    outline: 2px solid #3b82f6;
+    background: #eef6ff;
+}
+
+td.saving {
+    position: relative;
+}
+
+td.saving::after {
+    content: '⏳';
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+td.saved {
+    animation: flash 0.6s ease;
+}
+
+@keyframes flash {
+    from {
+        background: #d1fae5;
+    }
+
+    to {
+        background: transparent;
+    }
+}
+
+td.error {
+    outline: 2px solid #ef4444 !important;
+    background: #fee2e2 !important;
+}
+
+/* ----------------------------------------------------------------------------- */
+
+.sede-select,
+.actividad-select,
+.horario-select,
+.observaciones-select,
+.estado-select {
+    border: none;
+    font-size: 0.8vw;
+    font-family: Nunito sans;
+    background: transparent;
+    outline: none;
+}
+
+/* ----------------------------------------------------------------------------- */
+
+td.editing {
+    padding: 0;
+}
+
+.cell-input {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border: 0;
+    padding: 6px 8px;
+    font: inherit;
+    outline: 2px solid #3b82f6;
+    background: #eef6ff;
+}
+
+td.saving {
+    position: relative;
+}
+
+td.saving::after {
+    content: '⏳';
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+td.saved {
+    animation: flash 0.6s ease;
+}
+
+@keyframes flash {
+    from {
+        background: #d1fae5;
+    }
+
+    to {
+        background: transparent;
+    }
+}
+
+td.error {
+    outline: 2px solid #ef4444 !important;
+    background: #fee2e2 !important;
+}
+
+
+/* ----------------------------------------------------------------------------- */
+.suggestions-box {
+    background-color: white;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    width: calc(100% - 2px);
+    z-index: 10000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sugg-item {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.sugg-item:hover {
+    background-color: #f0f0f0;
+}
+
+.sugg-empty {
+    padding: 8px 12px;
+    color: #888;
+    font-style: italic;
+}
+
+.op-sci-box {
+    position: relative;
+    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8vw;
+    font-family: Nunito sans;
+    font-weight: bold;
+    background-color: white;
+    box-shadow: 0px 0px 15px 5px rgb(242, 242, 242);
+    padding: 1vw;
+}
+
+.ctpn-maq-box {
+    position: relative;
+    margin-top: 7vw;
+    margin-left: 44.5vw;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8vw;
+    font-family: Nunito sans;
+    font-weight: bold;
+    background-color: white;
+    box-shadow: 0px 0px 15px 5px rgb(242, 242, 242);
+    padding: 1vw;
+}
+
+.area-select,
+.maquina-select {
+    padding: 0.5vw;
+    font-family: Nunito sans;
+    font-size: 0.8vw;
+}
+
+.op-sci-box input {
+    padding: 0.5vw;
+    font-family: Nunito sans;
+    font-size: 0.8vw;
+}
+
+.dr-output {
+    font-size: 0.8vw;
+    font-family: Nunito sans;
+}
+
+.btn-save,
+.btn-cancel {
+    margin-top: 1vw;
+    border-radius: 0.3vw;
+    background: #3b82f6;
+    border: 0.1vw solid black;
+    cursor: pointer;
+    width: 5vw;
+    height: 2vw;
+    font-size: 0.7vw;
+    font-family: Nunito sans;
+}
+
+.btn-cancel {
+    background: #ed6b07;
+}
+
+/* ------------------------GUARDAR CAMBIOS------------------------*/
+
+.save-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5vw;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    font-size: 1vw;
+    font-family: Nunito sans;
+}
+
+#btnGuardar {
+    margin-top: 1vw;
+    margin-left: 1vw;
+    padding: 10px 20px;
+    font-size: 0.8vw;
+    font-family: Nunito sans;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    background-color: #27ae60;
+    color: white;
+    transition: all 0.2s ease-in-out;
+}
+
+#btnRevertir {
+    margin-top: 1vw;
+    margin-left: 1vw;
+    padding: 10px 20px;
+    font-size: 0.8vw;
+    font-family: Nunito sans;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    background-color: rgb(167, 5, 5);
+    /* Verde */
+    color: white;
+    transition: all 0.2s ease-in-out;
+}
+
+#link-revertir {
+    text-decoration: none;
+}
+
+#btnGuardar:not(:disabled):hover {
+    background-color: #2ecc71;
+    transform: translateY(-2px);
+}
+
+#btnGuardar:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+}
+
+#saveStatus {
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+#saveStatus[data-status="saved"] {
+    color: #27ae60;
+}
+
+#saveStatus[data-status="unsaved"] {
+    color: #f39c12;
+}
+
+#saveStatus[data-status="saving"] {
+    color: #3498db;
+}
+
+#saveStatus[data-status="error"] {
+    color: #e74c3c;
+}
+
+.changed-field {
+  background-color: #ed6b07 !important;
+  color: white !important;
+}
+.changed-field select {
+  background-color: #ed6b07 !important;
+  color: white !important;
+}
+
+/* Si el input del editor pop-up se queda blanco, también puedes darle estilo */
+.op-sci-editor .op-input.changed-field,
+.op-sci-editor .sci-input.changed-field,
+.ctpn-maq-box .area-select.changed-field,
+.ctpn-maq-box .maquina-select.changed-field {
+  background-color: #ed6b07 !important;
+  color: white !important;
+}
+
+/* Para los inputs directos en celda, si no se colorean bien */
+.cell-input.changed-field {
+  background-color: #ed6b07 !important;
+  color: white !important;
+}
+
+/* --------------------------DELETE-----------------------------------------*/
+td.acciones {
+  text-align: center;
+}
+.btn-delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem; /* Ajusta el tamaño del ícono */
+  padding: 5px;
+  color: #c0392b;
+  transition: transform 0.2s;
+}
+.btn-delete:hover {
+  transform: scale(1.2);
+  color: #e74c3c;
+}

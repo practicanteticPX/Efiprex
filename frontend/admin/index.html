@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="./stylea.css">
+    <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
+    <link rel="shortcut icon" href="../assets/img/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <img id="logo" src="../assets/img/Logo-Prexxa.png" alt="">
+    </div>
+
+    <h2 id="titulo">BIENVENIDO ADMINISTRADOR</h2>
+
+    <div class="save-container">
+        <a id="link-revertir" href="/admin">
+            <button id="btnRevertir">Revertir cambios</button>
+        </a>
+
+        <button id="btnGuardar" disabled>Guardar Cambios</button>
+        <span id="saveStatus" data-status="saved">✅ Guardado</span>
+    </div>
+
+    <a id="link-log-out" href="/login">
+        <button id="log-out">Cerrar sesión</button>
+    </a>
+    
+
+    <input id="datepicker" type="text" placeholder="Selecciona un rango de fecha" readonly>
+
+    <script>
+        new Litepicker({
+            element: document.getElementById('datepicker'),
+            singleMode: false
+        });
+    </script>
+
+    <input type="number" id="filterById" placeholder="Escriba un ID...">
+
+    <input type="text" id="filterByNoOp" placeholder="Escriba un N° de OP...">
+
+    <input type="text" id="q" placeholder="Nombre o Documento">
+    <label for="q">
+        <img id="lupa" src="../assets/img/search.png" alt="">
+    </label>
+
+    <div class="filtro">
+        <label for="filtroSede">Filtrar por Sede:</label>
+        <select id="filtroSede">
+            <option value="">-- Todas las sedes --</option>
+        </select>
+    </div>
+
+    <button id="limpiarfiltros">Quitar filtros</button>
+
+    <div class="pager">
+        <div class="botones">
+            <button id="prev">Anterior</button>
+            <button id="next">Siguiente</button>
+        </div>
+
+        <span id="pageInfo">&nbsp;</span>
+        <span id="x-pag">Por página:
+            <select id="pageSize">
+                <option>10</option>
+                <option selected>20</option>
+                <option>50</option>
+                <option>100</option>
+            </select>
+        </span>
+    </div>
+
+    <div class="table-shell">
+
+        <table id="grid" class="tabla">
+            <thead>
+                <tr>
+                    <th class="sticky-col id-col">ID</th>
+                    <th class="sticky-col cc-col" id="celdath-cc">CC</th>
+                    <th class="sticky-col name-col" id="celdath-nombre">Nombre</th>
+                    <th>Actividad</th>
+                    <th>Sede</th>
+                    <th>Fecha inicial</th>
+                    <th>Fecha final</th>
+                    <th>Hora inicial</th>
+                    <th>Hora final</th>
+                    <th>No OP</th>
+                    <th>SCI</th>
+                    <th>Descripción Referencia</th>
+                    <th>Estado SCI</th>
+                    <th>Cantidad</th>
+                    <th>Ct PN</th>
+                    <th>Máquina</th>
+                    <th>Horario</th>
+                    <th>Observación</th>
+                    <th>T. Fallo de Máquina</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody id="lista"></tbody>
+        </table>
+
+    </div>
+
+</body>
+<script src="./script.js"></script>
+
+
+</html>
