@@ -10,10 +10,11 @@ const certsDir = path.join(process.cwd(), 'certs');
 
 // Configuramos el objeto SSL leyendo los certificados desde la carpeta "certs"
 const sslConfig = {
-  ca: fs.readFileSync(path.join(certsDir, 'root.crt')).toString(),
-  cert: fs.readFileSync(path.join(certsDir, 'postgresql.crt')).toString(),
-  key: fs.readFileSync(path.join(certsDir, 'postgresql.key')).toString(),
-  rejectUnauthorized: true 
+  ca: fs.readFileSync(path.join(certsDir, 'ca-cert.pem')).toString(),
+  cert: fs.readFileSync(path.join(certsDir, 'admin-cert.pem')).toString(),
+  key: fs.readFileSync(path.join(certsDir, 'admin-key.pk8')).toString(),
+  rejectUnauthorized: true,
+  checkServerIdentity: () => undefined
 };
 
 // Pool para la base de datos principal (DB_QPREX)

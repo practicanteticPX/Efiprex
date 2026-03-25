@@ -413,19 +413,19 @@ export const resolvers = {
     },
 
     login: async (_, { username, password }) => {
-      // --- Lógica de validación ---
-      const ADMIN_USER = "supervisor";
-      const ADMIN_PASS = "WIN-2025";
 
-      if (username === ADMIN_USER && password === ADMIN_PASS) {
-        // Usuario y contraseña correctos.
-        const token = "fake-auth-token-" + Date.now();
-        return token;
+      const { default: bcrypt } = await import('bcryptjs');
+
+      const validUser = username === process.env.ADMIN_USER;
+      const validPass = validUser && await bcrypt.compare(password, process.env.ADMIN_PASS_HASH);
+
+      if (validUser && validPass) {
+        return "fake-auth-token-" + Date.now();
       } else {
-        // Credenciales incorrectas.
         throw new Error("Usuario o contraseña incorrectos.");
       }
     },
+
 
     crearParoConIntervencion: async (_, { paro, intervencion }, { query2 }) => {
       await query2('BEGIN');

@@ -93,9 +93,47 @@ h3 {
     position: absolute;
     top: 200px;
     width: 100%;
-    bottom: 0;
+    bottom: 48px;
     overflow-x: auto;
     overflow-y: auto;
+}
+
+.pagination-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    background: #1e293b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 0 16px;
+    z-index: 10;
+}
+
+.pagination-bar select,
+.pagination-bar button {
+    background: #334155;
+    color: #e2e8f0;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.pagination-bar button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.pagination-bar #pageInfo {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    min-width: 80px;
+    text-align: center;
 }
 
 /* ============================================

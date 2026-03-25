@@ -59,8 +59,8 @@ query {
 `;
 
 const QUERY_PAROS = `
-query {
-  paros {
+query Paros($limit: Int, $offset: Int) {
+  paros(limit: $limit, offset: $offset) {
     id
     usuario
     cedula
@@ -182,6 +182,24 @@ async function cargarTiposMantenimiento() {
 }
 
 // ============================================
+// PAGINACIÓN
+// ============================================
+let pageSize = 20;
+let offset = 0;
+
+function actualizarPaginacion(count) {
+    const info = document.getElementById('pageInfo');
+    const btnPrev = document.getElementById('prev');
+    const btnNext = document.getElementById('next');
+
+    const from = count === 0 ? 0 : offset + 1;
+    const to = offset + count;
+    info.textContent = `${from} – ${to}`;
+    btnPrev.disabled = offset === 0;
+    btnNext.disabled = count < pageSize;
+}
+
+// ============================================
 // CARGAR PAROS
 // ============================================
 async function cargarParos() {
@@ -189,7 +207,7 @@ async function cargarParos() {
     tbody.innerHTML = '<tr><td colspan="10" class="loading">Cargando paros...</td></tr>';
 
     try {
-        const data = await gqlFetch(QUERY_PAROS);
+        const data = await gqlFetch(QUERY_PAROS, { limit: pageSize, offset });
         const paros = data?.paros || [];
 
         if (paros.length === 0) {
@@ -224,9 +242,11 @@ async function cargarParos() {
             `;
             tbody.appendChild(tr);
         });
+        actualizarPaginacion(paros.length);
     } catch (error) {
         console.error('Error al cargar paros:', error);
         tbody.innerHTML = `<tr><td colspan="10" class="loading" style="color: #ef4444;">Error: ${error.message}</td></tr>`;
+        actualizarPaginacion(0);
     }
 }
 
@@ -587,6 +607,21 @@ document.addEventListener('DOMContentLoaded', () => {
     cargarParos();
     cargarUsuariosMantenimiento();
     cargarTiposMantenimiento();
+
+    // Paginación
+    document.getElementById('prev')?.addEventListener('click', () => {
+        offset = Math.max(0, offset - pageSize);
+        cargarParos();
+    });
+    document.getElementById('next')?.addEventListener('click', () => {
+        offset += pageSize;
+        cargarParos();
+    });
+    document.getElementById('pageSize')?.addEventListener('change', (e) => {
+        pageSize = parseInt(e.target.value);
+        offset = 0;
+        cargarParos();
+    });
 
     // Event listeners para modales
     document.getElementById('btn-cerrar-modal')?.addEventListener('click', cerrarModal);
