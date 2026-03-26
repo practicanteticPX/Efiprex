@@ -5,7 +5,7 @@ import { GraphQLScalarType, Kind } from 'graphql';
 // CONSTANTES Y CONFIGURACIÓN
 // ===============================================
 
-const FORMULARIO_TABLE = 'public."T_Dim_Formulario"';
+const FORMULARIO_TABLE = 'tablas_servicios."T_Hist_Formulario"';
 const MAQUINA_TABLE = 'public."T_Dim_Maquinas"';
 const ACTIVIDAD_TABLE = 'public."T_Dim_Actividad"';
 const MATERIAL_TABLE = 'public."T_Dim_Material"';
@@ -112,7 +112,7 @@ export const resolvers = {
     },
 
     // --- Queries del Admin (lista principal y detalles) ---
-    formularios: async (_p, { limit = 50, offset = 0, q, dateFrom, dateTo, id, no_op, sede }, { query }) => {
+    formularios: async (_p, { limit = 50, offset = 0, q, dateFrom, dateTo, id, no_op, sede }, { query2: query }) => {
 
       const lim = Math.min(Math.max(limit, 1), 500);
       const off = Math.max(offset, 0);
@@ -176,7 +176,7 @@ export const resolvers = {
     },
 
     // AJUSTADO: Ahora busca por 'id' como definimos en el schema unificado.
-    formulario: async (_p, { id }, { query }) => {
+    formulario: async (_p, { id }, { query2: query }) => {
       const { rows } = await query(`SELECT * FROM ${FORMULARIO_TABLE} WHERE "id" = $1 LIMIT 1;`, [id]);
       return rows[0] || null;
     },
@@ -214,11 +214,11 @@ export const resolvers = {
       return rows;
     },
 
-    sedesDisponibles: async (_, __, { query }) => {
+    sedesDisponibles: async (_, __, { query2: query }) => {
       const sql = `
-            SELECT DISTINCT "sede" 
-            FROM public."T_Dim_Formulario" 
-            WHERE "sede" IS NOT NULL AND "sede" <> '' 
+            SELECT DISTINCT "sede"
+            FROM ${FORMULARIO_TABLE}
+            WHERE "sede" IS NOT NULL AND "sede" <> ''
             ORDER BY "sede" ASC;
         `;
       const { rows } = await query(sql);
@@ -319,7 +319,7 @@ export const resolvers = {
   // ===============================================
   Mutation: {
     // --- Mutation del Formulario ---
-    crear_formulario: async (_, { input }, { query }) => {
+    crear_formulario: async (_, { input }, { query2: query }) => {
 
       const normalizeForCheck = (s) => String(s ?? '').trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
       const isNA = (v) => { const t = String(v ?? '').trim(); if (!t) return true; const n = normalizeForCheck(t); return n === 'n/a' || n.startsWith('seleccione'); };
@@ -347,7 +347,7 @@ export const resolvers = {
     },
 
     // --- Mutations del Admin ---
-    updateFormulario: async (_p, { id, patch }, { query }) => {
+    updateFormulario: async (_p, { id, patch }, { query2: query }) => {
 
       const fields = [];
       const params = [];
@@ -370,7 +370,7 @@ export const resolvers = {
       return rows[0] || null;
     },
 
-    updateMultiplesFormularios: async (_p, { updates }, { query }) => {
+    updateMultiplesFormularios: async (_p, { updates }, { query2: query }) => {
       await query('BEGIN');
       try {
         for (const update of updates) {
@@ -401,10 +401,10 @@ export const resolvers = {
       }
     },
 
-    deleteFormulario: async (_, { id }, { query }) => {
+    deleteFormulario: async (_, { id }, { query2: query }) => {
       const sql = `
-        DELETE FROM public."T_Dim_Formulario" 
-        WHERE "id" = $1 
+        DELETE FROM ${FORMULARIO_TABLE}
+        WHERE "id" = $1
         RETURNING *;
       `;
       const { rows } = await query(sql, [id]);
