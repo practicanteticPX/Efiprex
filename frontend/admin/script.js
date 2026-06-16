@@ -312,7 +312,7 @@ lista.addEventListener('change', (e) => {
 
 // ------------------------------------------------------------------------
 
-function trackChange(id, field, value) {
+function trackChangeSimple(id, field, value) {
   if (!pendingChanges[id]) {
     pendingChanges[id] = {};
   }
@@ -737,7 +737,7 @@ async function cargar() {
         items {
           id cc nombres sede no_op sci_ref descripcion_referencia
           fecha_inicio hora_inicio fecha_final hora_final
-          actividad estado_sci cantidad area maquina horario observaciones tiempo_fallo_minutos
+          actividad estado_sci cantidad cantidad_maquina area maquina horario observaciones tiempo_fallo_minutos
         }
       }
     }
@@ -772,6 +772,7 @@ async function cargar() {
           <td data-field="descripcion_referencia" data-original-value="${it.descripcion_referencia ?? ''}" class="ro" tabindex="0">${it.descripcion_referencia ?? ''}</td>
           <td data-field="estado_sci" data-original-value="${it.estado_sci ?? ''}" tabindex="0">${renderEstadoSelect(it.estado_sci)}</td>
           <td data-field="cantidad" data-original-value="${it.cantidad ?? 0}" class="${it.cantidad === 0 ? 'ro' : ''}" tabindex="0">${it.cantidad ?? 0}</td>
+          <td data-field="cantidad_maquina" data-original-value="${it.cantidad_maquina ?? ''}" class="${it.cantidad_maquina == null ? 'ro' : ''}" tabindex="0">${it.cantidad_maquina ?? ''}</td>
           <td data-field="area" data-original-value="${it.area ?? ''}" class="${it.area === 'N/A' ? 'ro' : ''}" tabindex="0">${it.area ?? ''}</td>
           <td data-field="maquina" data-original-value="${it.maquina ?? ''}" class="${it.maquina === 'N/A' ? 'ro' : ''}" tabindex="0">${it.maquina ?? ''}</td>
           <td data-field="horario" data-original-value="${it.horario ?? ''}" tabindex="0">${renderHorarioSelect(it.horario)}</td>

@@ -436,7 +436,7 @@ option:checked {
 
 .dr {
     position: absolute;
-    width: 59vw;
+    width: 25vw;
     top: 17vw;
     left: 31vw;
 }
@@ -444,8 +444,8 @@ option:checked {
 .estado-sci {
     position: absolute;
     width: 25vw;
-    top: 22.5vw;
-    left: 31vw;
+    top: 17vw;
+    left: 65vw;
 }
 
 .ctpn {
@@ -466,6 +466,21 @@ option:checked {
     position: absolute;
     width: 25vw;
     top: 22.5vw;
+    left: 31vw;
+}
+
+.tipo-caja {
+    display: none !important;
+}
+
+.vasos-maquina {
+    display: none !important;
+}
+
+.cantidad-maquina {
+    position: absolute;
+    width: 25vw;
+    top: 22.5vw;
     left: 65vw;
 }
 
@@ -483,12 +498,21 @@ option:checked {
     left: 65vw;
 }
 
+body.formacion-vasos-activa #enviarFormulario,
+body.formacion-vasos-activa #btn-siguiente,
+body.formacion-vasos-activa #btn-volver {
+    top: 44vw;
+}
+
 #op,
 #sci,
 #dr,
 #estado-sci,
 #ctpn,
 #maquina,
+#tipo-caja,
+#vasos-maquina,
+#cantidad-maquina,
 #horprog,
 #observacion {
     font-family: Nunito sans;
@@ -738,6 +762,43 @@ option:checked {
     color: black;
 }
 
+#vc {
+    position: absolute;
+    top: 20vw;
+    left: 31vw;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+}
+
+.input-calc5 {
+    position: absolute;
+    top: 26vw;
+    left: 31vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2vw;
+    align-items: center;
+}
+
+.input-calc5>input,
+.input-calc5>select {
+    width: 16.5vw;
+    border: none;
+    border-bottom: 0.1vw solid black;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+    outline: none;
+}
+
+#resultado5 {
+    position: absolute;
+    top: 42vw;
+    left: 31vw;
+    font-size: 1.5vw;
+    font-family: Nunito sans;
+    color: black;
+}
+
 #enviarFormulario {
     position: absolute;
     width: 15vw;
@@ -756,6 +817,64 @@ option:checked {
     font-family: Nunito sans;
     color: #ed6b07;
 
+}
+
+.swal-local-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, .58);
+}
+
+.swal-local-popup {
+    width: min(32rem, 92vw);
+    border-radius: 0.5vw;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .28);
+    padding: 2rem;
+    font-family: Nunito sans;
+    text-align: center;
+}
+
+.swal-local-icon {
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto 1rem;
+    border: 0.25rem solid currentColor;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.swal-local-title {
+    margin: 0 0 0.75rem;
+    font-size: 1.6rem;
+    line-height: 1.2;
+}
+
+.swal-local-text,
+.swal-local-html {
+    margin: 0 0 1.5rem;
+    font-size: 1rem;
+    line-height: 1.45;
+}
+
+.swal-local-confirm {
+    min-width: 9rem;
+    border: none;
+    border-radius: 0.3vw;
+    padding: 0.75rem 1.25rem;
+    color: #000;
+    font-family: Nunito sans;
+    font-size: 1rem;
+    cursor: pointer;
 }
 
 .is-invalid {
@@ -901,7 +1020,7 @@ option:checked {
 #fallo-maquina-container {
     display: block;
     position: absolute;
-    top: 40vw;
+    top: 44vw;
     left: 77vw;
 
 }

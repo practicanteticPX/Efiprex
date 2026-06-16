@@ -205,7 +205,7 @@ function resaltarOption(elemento) {
 }
 
 // Mostrar calculadora seleccionada
-function mostrarCalculadora(num) {
+function mostrarCalculadoraLegacy(num) {
   // Ocultar todas
   document.querySelectorAll(".calculadora").forEach(div => {
     div.style.display = "none";
@@ -389,6 +389,119 @@ function calcularMetrosEtiquetas() {
   document.getElementById("resultado4").innerText = "Etiquetas: " + resultado;
   setCantidadFromResult(resultado);
 }
+function instalarSweetAlertLocal() {
+  if (window.Swal && typeof window.Swal.fire === 'function') return;
+
+  window.Swal = {
+    fire(options = {}) {
+      const cfg = typeof options === 'string' ? { title: options } : options;
+
+      return new Promise((resolve) => {
+        const previous = document.querySelector('.swal-local-backdrop');
+        if (previous) previous.remove();
+
+        const backdrop = document.createElement('div');
+        backdrop.className = 'swal-local-backdrop';
+
+        const popup = document.createElement('div');
+        popup.className = 'swal-local-popup';
+        popup.style.background = cfg.background || '#ebd5c0';
+        popup.style.color = cfg.color || '#000';
+
+        const icon = document.createElement('div');
+        icon.className = `swal-local-icon ${cfg.icon || 'info'}`;
+        icon.textContent = cfg.icon === 'success' ? '✓' : cfg.icon === 'error' ? '!' : 'i';
+        icon.style.borderColor = cfg.iconColor || (cfg.icon === 'success' ? '#16a34a' : '#e11d48');
+        icon.style.color = cfg.iconColor || (cfg.icon === 'success' ? '#16a34a' : '#e11d48');
+
+        const title = document.createElement('h2');
+        title.className = 'swal-local-title';
+        title.textContent = cfg.title || '';
+
+        const text = document.createElement('p');
+        text.className = 'swal-local-text';
+        text.textContent = cfg.text || '';
+
+        const html = document.createElement('div');
+        html.className = 'swal-local-html';
+        if (cfg.html) html.innerHTML = cfg.html;
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'swal-local-confirm';
+        button.textContent = cfg.confirmButtonText || 'Aceptar';
+        button.style.background = cfg.confirmButtonColor || '#ed6b07';
+
+        const close = () => {
+          backdrop.remove();
+          resolve({ isConfirmed: true, isDismissed: false });
+        };
+
+        button.addEventListener('click', close);
+        backdrop.addEventListener('click', (event) => {
+          if (event.target === backdrop && cfg.allowOutsideClick !== false) close();
+        });
+        document.addEventListener('keydown', function onKeydown(event) {
+          if (event.key !== 'Escape' || cfg.allowEscapeKey === false) return;
+          document.removeEventListener('keydown', onKeydown);
+          close();
+        });
+
+        popup.append(icon, title);
+        if (cfg.html) popup.appendChild(html);
+        else if (cfg.text) popup.appendChild(text);
+        popup.appendChild(button);
+        backdrop.appendChild(popup);
+        document.body.appendChild(backdrop);
+        button.focus();
+      });
+    }
+  };
+}
+
+instalarSweetAlertLocal();
+
+function setCantidadMaquinaFromResult(val, { focusNext = true } = {}) {
+  const inp = document.getElementById('cantidad-maquina');
+  if (!inp) return;
+
+  const num = (typeof val === 'number') ? val : parseFloat(val);
+  if (!isFinite(num)) return;
+
+  const pretty = Number.isInteger(num) ? num : Number(num.toFixed(2));
+  inp.value = String(pretty);
+  if (typeof clearError === 'function') clearError(inp);
+
+  ['input', 'change'].forEach(ev =>
+    inp.dispatchEvent(new Event(ev, { bubbles: true }))
+  );
+
+  if (focusNext) {
+    const next = document.getElementById('horprog');
+    if (next && !next.disabled) next.focus();
+  }
+}
+
+function calcularVasosACajas() {
+  const tipoCaja = parseFloat(document.getElementById("tipoCajaCalc")?.value);
+  const vasos = parseFloat(document.getElementById("vasosMaquinaCalc")?.value);
+  const out = document.getElementById("resultado5");
+
+  if (!out) return;
+
+  if (!isFinite(tipoCaja) || tipoCaja <= 0 || !isFinite(vasos) || vasos <= 0) {
+    out.innerText = "Resultado: Por favor ingresa todos los datos.";
+    return;
+  }
+
+  const resultado = vasos / tipoCaja;
+  const pretty = Number.isInteger(resultado) ? resultado : Number(resultado.toFixed(2));
+
+  out.innerText = "Cajas: " + pretty;
+  document.getElementById('tipo-caja') && (document.getElementById('tipo-caja').value = String(tipoCaja));
+  document.getElementById('vasos-maquina') && (document.getElementById('vasos-maquina').value = String(vasos));
+  setCantidadMaquinaFromResult(resultado);
+}
 
 // === Helper: poner el último resultado en #cantidad ===
 // === Poner el resultado en #campo-cantidad y avisar al validador ===
@@ -465,6 +578,7 @@ const CAMPOS = [
   { id: "dr", nombre: "Descripción Referencia" },
   { id: "estado-sci", nombre: "Estado SCI", tipo: "select" },
   { id: "campo-cantidad", nombre: "Cantidad", tipo: "number+", min: 0.000001, step: "0.01" },
+  { id: "cantidad-maquina", nombre: "Cantidad maquina", tipo: "number+", min: 0.000001, step: "0.01" },
   { id: "ctpn", nombre: "CT Pn", tipo: "select" },
   { id: "maquina", nombre: "Máquina", tipo: "select" },
 
@@ -477,6 +591,8 @@ function _val(el) { return (el?.value ?? "").toString().trim(); }
 
 function _invalido(el, cfg = {}) {
   if (!el) return true;
+
+  if (el.id === 'cantidad-maquina' && !actividadEsFormacionVasos()) return false;
 
   // Si marcaste N/A en vista2, no validar ese campo
   if (el.dataset.naApplied === '1') return false;
@@ -955,6 +1071,28 @@ async function enviarFormulario(e) {
 
   // Devuelve 'N/A' si el campo quedó marcado como N/A, si está vacío,
   // o si el option seleccionado está deshabilitado/placeholder.
+  if (actividadEsFormacionVasos()) {
+    calcularCantidadMaquinaEnVivo();
+
+    const tipoCaja = Number(document.getElementById('tipo-caja')?.value);
+    const vasosMaquina = Number(document.getElementById('vasos-maquina')?.value);
+    const cantidadMaquina = Number(document.getElementById('cantidad-maquina')?.value);
+
+    if (![1000, 2000, 2500].includes(tipoCaja) || !Number.isFinite(vasosMaquina) || vasosMaquina <= 0 || !Number.isFinite(cantidadMaquina) || cantidadMaquina <= 0) {
+      Swal.fire({
+        title: 'Datos de vasos incompletos',
+        text: 'Selecciona el tipo de caja e ingresa la cantidad de vasos para calcular la cantidad maquina.',
+        icon: 'error',
+        confirmButtonText: 'Entendido',
+        confirmButtonColor: '#ed6b07',
+        background: '#ebd5c0',
+        color: '#000',
+        iconColor: '#e11d48'
+      });
+      return;
+    }
+  }
+
   function getSelectTextNA(id) {
     const el = document.getElementById(id);
     if (!el) return 'N/A';
@@ -995,6 +1133,14 @@ async function enviarFormulario(e) {
     return s || 'N/A';
   }
 
+  function getNumberOrNull(id) {
+    const raw = document.getElementById(id)?.value?.trim() || '';
+    if (!raw) return null;
+    const n = parseFloat(raw.replace(',', '.'));
+    return Number.isFinite(n) ? n : null;
+  }
+
+  const esFormacionVasos = actividadEsFormacionVasos();
 
   const input = {
     cc: (document.getElementById('id')?.value?.trim() || null), // el backend ya lo blinda
@@ -1033,6 +1179,7 @@ async function enviarFormulario(e) {
       const n = parseFloat(raw.replace(',', '.'));
       return Number.isFinite(n) ? n : 0;
     })(),
+    cantidad_maquina: esFormacionVasos ? String(getNumberOrNull('cantidad-maquina') ?? '') : 'N/A',
   };
 
 
@@ -1053,7 +1200,28 @@ async function enviarFormulario(e) {
 
     if (btn) { btn.disabled = false; btn.textContent = btn.dataset._txt || 'Enviar'; }
 
-    if (btn) { btn.disabled = false; btn.textContent = btn.dataset._txt || 'Enviar'; }
+    if (window.Swal) {
+      await Swal.fire({
+        title: 'Registro guardado',
+        text: 'Tu informacion se ha enviado correctamente.',
+        icon: 'success',
+        confirmButtonText: 'Volver al inicio',
+        confirmButtonColor: '#ed6b07',
+        background: '#ebd5c0',
+        color: '#000',
+        iconColor: '#16a34a',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        toast: false,
+        timer: undefined,
+        heightAuto: false
+      });
+    } else {
+      alert('Registro guardado. Tu informacion se ha enviado correctamente.');
+    }
+
+    window.location.reload();
+    return;
 
     if (window.Swal) {
       const { isConfirmed } = await Swal.fire({
@@ -1096,6 +1264,8 @@ async function enviarFormulario(e) {
         color: '#000',
         iconColor: '#e11d48'
       });
+    } else {
+      alert('No fue posible enviar el formulario. Intenta de nuevo.');
     }
   }
 }
@@ -1122,9 +1292,85 @@ const norm = (s) => (s || '')
   .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // quita tildes
   .toLowerCase().replace(/\s+/g, ' ').trim();
 
+const FORMACION_VASOS = 'formacion de vasos';
+
 function selectedText(sel) {
   return sel?.options?.[sel.selectedIndex]?.textContent ?? '';
 }
+
+function actividadEsFormacionVasos() {
+  return norm(selectedText(document.getElementById('actividad'))) === FORMACION_VASOS;
+}
+
+function calcularCantidadMaquinaEnVivo() {
+  const tipoCaja = parseFloat(document.getElementById('tipo-caja')?.value);
+  const vasos = parseFloat(document.getElementById('vasos-maquina')?.value);
+  const out = document.getElementById('cantidad-maquina');
+
+  if (!out) return;
+
+  if (!isFinite(tipoCaja) || tipoCaja <= 0 || !isFinite(vasos) || vasos <= 0) {
+    out.value = '';
+    return;
+  }
+
+  setCantidadMaquinaFromResult(vasos / tipoCaja, { focusNext: false });
+}
+
+function gestionarCamposFormacionVasos() {
+  const aplica = actividadEsFormacionVasos();
+  document.body.classList.toggle('formacion-vasos-activa', aplica);
+
+  document.querySelectorAll('.vasos-field').forEach(el => {
+    el.classList.toggle('oculto', !aplica);
+    el.querySelectorAll('input, select').forEach(field => {
+      field.disabled = !aplica;
+      field.required = aplica;
+      if (!aplica) {
+        field.value = '';
+        field.dataset.naApplied = '1';
+      } else {
+        delete field.dataset.naApplied;
+      }
+    });
+  });
+
+  document.querySelectorAll('.vasos-hidden').forEach(el => {
+    el.classList.add('oculto');
+    el.querySelectorAll('input, select').forEach(field => {
+      field.disabled = false;
+      field.required = false;
+      if (!aplica) {
+        field.value = '';
+        delete field.dataset.naApplied;
+      }
+    });
+  });
+
+  document.getElementById('tab-calc-vasos')?.classList.toggle('oculto', !aplica);
+
+  if (!aplica && document.getElementById('calc5')?.style.display === 'block') {
+    mostrarCalculadora(1);
+  }
+
+  calcularCantidadMaquinaEnVivo();
+
+  if (typeof bloquearCamposProgresivo === 'function') bloquearCamposProgresivo();
+  if (typeof actualizarBloqueoGUI === 'function') actualizarBloqueoGUI({ autofocusSugerido: false });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  ['tipo-caja', 'vasos-maquina'].forEach(id => {
+    const el = document.getElementById(id);
+    const evt = el?.tagName === 'SELECT' ? 'change' : 'input';
+    el?.addEventListener(evt, calcularCantidadMaquinaEnVivo);
+  });
+
+  document.getElementById('tipoCajaCalc')?.addEventListener('change', calcularVasosACajas);
+  document.getElementById('vasosMaquinaCalc')?.addEventListener('input', calcularVasosACajas);
+  document.getElementById('actividad')?.addEventListener('change', gestionarCamposFormacionVasos);
+  gestionarCamposFormacionVasos();
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   // Refs
@@ -1230,7 +1476,10 @@ document.addEventListener('DOMContentLoaded', () => {
       placeSubmitIn(1);
     } else {
       // Muestra sección detallada y su botón
-      if (vista2) vista2.style.display = '';
+      if (vista2) {
+        const detalleActivo = btnInfoDet?.classList.contains('activo') || vista2.style.display === 'block';
+        vista2.style.display = detalleActivo ? 'block' : '';
+      }
       btnInfoDet?.classList.remove('oculta');
 
       // Restaura valores originales de vista2
@@ -1241,6 +1490,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Botón submit en vista2
       placeSubmitIn(2);
+    }
+
+    if (typeof gestionarCamposFormacionVasos === 'function') {
+      gestionarCamposFormacionVasos();
     }
   }
 
@@ -1668,6 +1921,8 @@ async function cargarActividades() {
     opt.textContent = a.actividad; // muestras el nombre
     sel.appendChild(opt);
   });
+  window.aplicarModoSegunActividad?.();
+  gestionarCamposFormacionVasos();
 }
 
 document.addEventListener('DOMContentLoaded', () => {

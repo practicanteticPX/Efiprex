@@ -214,6 +214,26 @@
             <input id="campo-cantidad" type="number" min="0" step="0.01" inputmode="numeric">
         </div>
 
+        <div class="tipo-caja vasos-hidden oculto">
+            <label for="tipo-caja">Tipo de caja</label>
+            <select name="Tipo Caja" id="tipo-caja">
+                <option value="" selected disabled>Seleccione tipo de caja</option>
+                <option value="1000">1000 vasos</option>
+                <option value="2000">2000 vasos</option>
+                <option value="2500">2500 vasos</option>
+            </select>
+        </div>
+
+        <div class="vasos-maquina vasos-hidden oculto">
+            <label for="vasos-maquina">Vasos por maquina</label>
+            <input id="vasos-maquina" type="number" min="0" step="1" inputmode="numeric">
+        </div>
+
+        <div class="cantidad-maquina vasos-field oculto">
+            <label for="cantidad-maquina">Cantidad maquina</label>
+            <input id="cantidad-maquina" type="number" min="0" step="0.01" inputmode="numeric" readonly>
+        </div>
+
         <div class="horprog">
             <label for="horprog">Horario programado</label>
             <select name="Horario" id="horprog">
@@ -258,6 +278,7 @@
             <p onclick="validarYIr(this, 2)">2. Rollos a Metros</p>
             <p onclick="validarYIr(this, 3)">3. Etiquetas a Metros</p>
             <p onclick="validarYIr(this, 4)">4. Metros a Etiquetas</p>
+            <p id="tab-calc-vasos" class="oculto" onclick="validarYIr(this, 5)">5. Vasos a Cajas</p>
         </div>
 
         <div class="calculadora" id="calc1">
@@ -342,14 +363,33 @@
             <div id="resultado4">Resultado: </div>
         </div>
 
+        <div class="calculadora" id="calc5" style="display:none;">
+
+            <h3 id="vc">Vasos a Cajas</h3>
+
+            <div class="input-calc5">
+
+                <select id="tipoCajaCalc">
+                    <option value="" selected disabled>Tipo de caja</option>
+                    <option value="1000">1000 vasos</option>
+                    <option value="2000">2000 vasos</option>
+                    <option value="2500">2500 vasos</option>
+                </select>
+                <input type="number" id="vasosMaquinaCalc" min="0" step="1" placeholder="Vasos por maquina">
+
+            </div>
+
+            <div id="resultado5">Resultado: </div>
+        </div>
+
     </div>
 
-
-
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="../assets/css/swal-fallback.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../assets/js/swal-fallback.js"></script>
+    <script src="./script.js"></script>
 </body>
-<script src="./script.js"></script>
-<!-- SweetAlert2 -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </html>

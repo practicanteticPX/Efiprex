@@ -322,25 +322,31 @@ export const resolvers = {
     crear_formulario: async (_, { input }, { query2: query }) => {
 
       const normalizeForCheck = (s) => String(s ?? '').trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+      const isFormacionVasos = (s) => normalizeForCheck(s) === 'formacion de vasos';
       const isNA = (v) => { const t = String(v ?? '').trim(); if (!t) return true; const n = normalizeForCheck(t); return n === 'n/a' || n.startsWith('seleccione'); };
       const textFinal = (v) => (isNA(v) ? 'N/A' : String(v).trim());
       const numFinal = (v) => { if (v === null || v === undefined) return 0; const s = String(v).replace(',', '.').trim(); if (!s) return 0; const n = Number(s); return Number.isFinite(n) ? n : 0; };
+      const nullableNum = (v) => { if (v === null || v === undefined) return null; const s = String(v).replace(',', '.').trim(); if (!s || normalizeForCheck(s) === 'n/a') return null; const n = Number(s); return Number.isFinite(n) ? n : null; };
       const dateFinal = (v) => { const s = String(v ?? '').trim(); return s || null; };
       const timeFinal = (v) => { const s = String(v ?? '').trim(); return s || null; };
       const ccRaw = String(input.cc ?? '').trim();
       const ccFinal = /^\d+$/.test(ccRaw) ? ccRaw : null;
+      const actividadFinal = textFinal(input.actividad);
+      const aplicaVasos = isFormacionVasos(actividadFinal);
+      const cantidadMaquina = aplicaVasos ? String(nullableNum(input.cantidad_maquina) ?? 0) : 'N/A';
       const row = {
         cc: ccFinal, nombres: textFinal(input.nombres), sede: textFinal(input.sede), no_op: textFinal(input.no_op), sci_ref: textFinal(input.sci_ref),
         descripcion_ref: textFinal(input.descripcion_referencia), fecha_inicio: dateFinal(input.fecha_inicio), hora_inicio: timeFinal(input.hora_inicio),
-        fecha_final: dateFinal(input.fecha_final), hora_final: timeFinal(input.hora_final), actividad: textFinal(input.actividad), cantidad: numFinal(input.cantidad),
+        fecha_final: dateFinal(input.fecha_final), hora_final: timeFinal(input.hora_final), actividad: actividadFinal, cantidad: numFinal(input.cantidad),
+        cantidad_maquina: cantidadMaquina,
         estado_sci: textFinal(input.estado_sci), area: textFinal(input.area), maquina: textFinal(input.maquina), horario: textFinal(input.horario),
         observaciones: textFinal(input.observaciones), tiempo_fallo_minutos: input.observaciones === 'Fallo de maquina' ? Number(input.tiempo_fallo_minutos) : 0
       };
 
-      const sql = `INSERT INTO ${FORMULARIO_TABLE} ("cc","nombres","sede","no_op","sci_ref","descripcion_referencia","fecha_inicio","hora_inicio","fecha_final","hora_final","actividad","cantidad","estado_sci","area","maquina","horario","observaciones", "tiempo_fallo_minutos") VALUES ($1::bigint, $2, $3, $4, $5, $6, $7::date, $8::time, $9::date, $10::time, $11, $12::numeric, $13, $14, $15, $16, $17, $18) RETURNING *, "tiempo_fallo_minutos",TO_CHAR(NOW(),'YYYY-MM-DD"T"HH24:MI:SS') AS created_at, CAST("cc" AS TEXT) AS cc`;
+      const sql = `INSERT INTO ${FORMULARIO_TABLE} ("cc","nombres","sede","no_op","sci_ref","descripcion_referencia","fecha_inicio","hora_inicio","fecha_final","hora_final","actividad","cantidad","cantidad_maquina","estado_sci","area","maquina","horario","observaciones", "tiempo_fallo_minutos") VALUES ($1::bigint, $2, $3, $4, $5, $6, $7::date, $8::time, $9::date, $10::time, $11, $12::numeric, $13, $14, $15, $16, $17, $18, $19) RETURNING *, "tiempo_fallo_minutos",TO_CHAR(NOW(),'YYYY-MM-DD"T"HH24:MI:SS') AS created_at, CAST("cc" AS TEXT) AS cc`;
       const params = [
         row.cc, row.nombres, row.sede, row.no_op, row.sci_ref, row.descripcion_ref, row.fecha_inicio, row.hora_inicio, row.fecha_final, row.hora_final,
-        row.actividad, row.cantidad, row.estado_sci, row.area, row.maquina, row.horario, row.observaciones, row.tiempo_fallo_minutos
+        row.actividad, row.cantidad, row.cantidad_maquina, row.estado_sci, row.area, row.maquina, row.horario, row.observaciones, row.tiempo_fallo_minutos
       ];
       const { rows } = await query(sql, params);
       return rows[0];
@@ -357,6 +363,7 @@ export const resolvers = {
           if (key === 'fecha_inicio' || key === 'fecha_final') push(key, String(patch[key]), '::date');
           else if (key === 'hora_inicio' || key === 'hora_final') push(key, String(patch[key]), '::time');
           else if (key === 'cantidad') push(key, Number(patch[key]));
+          else if (key === 'cantidad_maquina') push(key, String(patch[key]));
           else push(key, String(patch[key]));
         }
       });
@@ -383,6 +390,7 @@ export const resolvers = {
               if (key === 'fecha_inicio' || key === 'fecha_final') push(key, String(patch[key]), '::date');
               else if (key === 'hora_inicio' || key === 'hora_final') push(key, String(patch[key]), '::time');
               else if (key === 'cantidad') push(key, Number(patch[key]));
+              else if (key === 'cantidad_maquina') push(key, String(patch[key]));
               else push(key, String(patch[key]));
             }
           });

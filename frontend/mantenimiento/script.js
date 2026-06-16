@@ -222,8 +222,6 @@ function validar({ paro, intervencion }) {
     if (isPreventivo) {
         if (!req(paro.fecha_paro_inicio)) errores.push('Fecha paro inicio');
         if (!req(paro.hora_paro_inicio)) errores.push('Hora paro inicio');
-        if (!req(paro.fecha_paro_final)) errores.push('Fecha paro final');
-        if (!req(paro.hora_paro_final)) errores.push('Hora paro final');
     }
     // Si es correctivo, validar ambos: intervención Y paro
     else if (isCorrectivo) {
@@ -234,8 +232,6 @@ function validar({ paro, intervencion }) {
 
         if (!req(paro.fecha_paro_inicio)) errores.push('Fecha paro inicio');
         if (!req(paro.hora_paro_inicio)) errores.push('Hora paro inicio');
-        if (!req(paro.fecha_paro_final)) errores.push('Fecha paro final');
-        if (!req(paro.hora_paro_final)) errores.push('Hora paro final');
     }
     // Si es predictivo o inspección
     else if (isPredictivo || isInspeccion) {
@@ -243,8 +239,6 @@ function validar({ paro, intervencion }) {
             // Si está detenido, validar solo paro (intervención se duplica)
             if (!req(paro.fecha_paro_inicio)) errores.push('Fecha paro inicio');
             if (!req(paro.hora_paro_inicio)) errores.push('Hora paro inicio');
-            if (!req(paro.fecha_paro_final)) errores.push('Fecha paro final');
-            if (!req(paro.hora_paro_final)) errores.push('Hora paro final');
         } else {
             // Si está operando, validar solo intervención (paro es null)
             if (!req(intervencion.fecha_intervencion_inicio)) errores.push('Fecha intervención inicio');
@@ -265,8 +259,6 @@ function validar({ paro, intervencion }) {
         if (paroValue === 'si') {
             if (!req(paro.fecha_paro_inicio)) errores.push('Fecha paro inicio');
             if (!req(paro.hora_paro_inicio)) errores.push('Hora paro inicio');
-            if (!req(paro.fecha_paro_final)) errores.push('Fecha paro final');
-            if (!req(paro.hora_paro_final)) errores.push('Hora paro final');
         }
     }
 
@@ -766,7 +758,7 @@ function init() {
     setDefaultDate('mant-fecha-intervencion-inicio');
     setDefaultDate('mant-fecha-intervencion-final');
     setDefaultDate('mant-fecha-paro-inicio');
-    setDefaultDate('mant-fecha-paro-final');
+    //setDefaultDate('mant-fecha-paro-final');
 
     document.getElementById('mant-guardar')?.addEventListener('click', guardar);
 

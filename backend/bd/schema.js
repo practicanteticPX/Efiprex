@@ -15,6 +15,7 @@ export const typeDefs = `
     hora_final: String
     actividad: String
     cantidad: Float
+    cantidad_maquina: String
     estado_sci: String
     area: String
     maquina: String
@@ -70,6 +71,7 @@ export const typeDefs = `
     hora_final: String
     actividad: String
     cantidad: Float
+    cantidad_maquina: String
     estado_sci: String
     area: String
     maquina: String
@@ -90,6 +92,7 @@ export const typeDefs = `
     sci_ref: String
     descripcion_referencia: String
     cantidad: Float
+    cantidad_maquina: String
     estado_sci: String
     area: String
     maquina: String
