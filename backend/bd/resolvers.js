@@ -8,7 +8,7 @@ import { GraphQLScalarType, Kind } from 'graphql';
 const FORMULARIO_TABLE = 'tablas_servicios."T_Hist_Formulario"';
 const MAQUINA_TABLE = 'public."T_Dim_Maquinas"';
 const ACTIVIDAD_TABLE = 'public."T_Dim_Actividad"';
-const MATERIAL_TABLE = 'public."T_Dim_Material"';
+const OPERARIO_VIEW = 'public."v_info_basica_personal_activos"';
 const OBSERVACIONES_TABLE = 'public."T_Dim_Observaciones"';
 const USUARIO_MANTENIMIENTO_TABLE = 'public."T_Dim_UsuarioMantenimiento"';
 const TIPO_MANTENIMIENTO_TABLE = 'public."T_Dim_TipoMantenimiento"';
@@ -77,10 +77,10 @@ export const resolvers = {
 
     buscarOperariosPorIdent: async (_, { prefix, limit = 10 }, { query }) => {
       const { rows } = await query(
-        `SELECT DISTINCT ON ("Identificacion") CAST("Identificacion" AS TEXT) AS identificacion, "Nombres" AS nombre 
-         FROM ${MATERIAL_TABLE} 
-         WHERE TRIM("Area") = 'Operaciones' AND CAST("Identificacion" AS TEXT) LIKE $1 
-         ORDER BY "Identificacion" ASC LIMIT $2`,
+        `SELECT DISTINCT ON (p."identificacion") CAST(p."identificacion" AS TEXT) AS identificacion, p."nombres" AS nombre
+         FROM ${OPERARIO_VIEW} p
+         WHERE UPPER(TRIM(p."area")) = 'OPERACIONES' AND CAST(p."identificacion" AS TEXT) LIKE $1
+         ORDER BY p."identificacion" ASC LIMIT $2`,
         [`${String(prefix)}%`, limit]
       );
       return rows;
@@ -88,9 +88,9 @@ export const resolvers = {
 
     operarioPorIdent: async (_, { ident }, { query }) => {
       const { rows } = await query(
-        `SELECT CAST("Identificacion" AS TEXT) AS identificacion, "Nombres" AS nombre 
-         FROM ${MATERIAL_TABLE} 
-         WHERE TRIM("Area") = 'Operaciones' AND CAST("Identificacion" AS TEXT) = $1 LIMIT 1`,
+        `SELECT CAST("identificacion" AS TEXT) AS identificacion, "nombres" AS nombre
+         FROM ${OPERARIO_VIEW}
+         WHERE UPPER(TRIM("area")) = 'OPERACIONES' AND CAST("identificacion" AS TEXT) = $1 LIMIT 1`,
         [String(ident)]
       );
       return rows[0] || null;

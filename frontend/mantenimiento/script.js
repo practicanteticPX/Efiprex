@@ -65,25 +65,17 @@ function buildInput() {
 
     const tipo_maquina = text(document.getElementById('mant-tipo-maquina')?.value);
     const tipo_mantenimiento = text(document.getElementById('mant-tipo-mantenimiento')?.value);
-    let paro_maquina = text(document.getElementById('mant-paro')?.value);
+    const paro_maquina = text(document.getElementById('mant-paro')?.value);
     const observacion = readObservacion();
 
-    // Lógica: preventivo y correctivo siempre tienen paro de máquina
     const tipoMantLower = (tipo_mantenimiento || '').toLowerCase();
-    const isPreventivo = tipoMantLower === 'preventivo';
-    const isCorrectivo = tipoMantLower === 'correctivo';
     const isPredictivo = tipoMantLower === 'predictivo';
-    const isInspeccion = tipoMantLower === 'inspección';
+    const isInspeccion = tipoMantLower === 'inspección' || tipoMantLower === 'inspeccion';
 
-    // Repuesto: array vacío si es predictivo o inspección, sino obtener repuestos
     const repuesto = (isPredictivo || isInspeccion) ? [] : getRepuestos();
 
-    if (isPreventivo || isCorrectivo) {
-        paro_maquina = 'si';
-    }
-
     const paroMaquinaLower = (paro_maquina || '').toLowerCase();
-    const isNoParo = paroMaquinaLower === 'no';
+    const hayParo = paroMaquinaLower === 'si';
 
     const timeRegex = /^\d{2}:\d{2}(:\d{2})?$/;
     const readTime = (id) => {
@@ -103,67 +95,21 @@ function buildInput() {
     let fecha_intervencion_inicio, hora_intervencion_inicio, fecha_intervencion_final, hora_intervencion_final;
     let fecha_paro_inicio, hora_paro_inicio, fecha_paro_final, hora_paro_final;
 
-    // Si es preventivo, leer de PARO y duplicar en INTERVENCIÓN (modo espejo)
-    if (isPreventivo) {
+    fecha_intervencion_inicio = readDate('mant-fecha-intervencion-inicio');
+    hora_intervencion_inicio = readTime('mant-hora-intervencion-inicio');
+    fecha_intervencion_final = readDate('mant-fecha-intervencion-final');
+    hora_intervencion_final = readTime('mant-hora-intervencion-final');
+
+    if (hayParo) {
         fecha_paro_inicio = readDate('mant-fecha-paro-inicio');
         hora_paro_inicio = readTime('mant-hora-paro-inicio');
         fecha_paro_final = readDate('mant-fecha-paro-final');
         hora_paro_final = readTime('mant-hora-paro-final');
-
-        // Duplicar paro en intervención
-        fecha_intervencion_inicio = fecha_paro_inicio;
-        hora_intervencion_inicio = hora_paro_inicio;
-        fecha_intervencion_final = fecha_paro_final;
-        hora_intervencion_final = hora_paro_final;
-    }
-    // Si es predictivo o inspección
-    else if (isPredictivo || isInspeccion) {
-        if (paroMaquinaLower === 'si') {
-            // Detenido: leer paro y duplicar en intervención (modo espejo)
-            fecha_paro_inicio = readDate('mant-fecha-paro-inicio');
-            hora_paro_inicio = readTime('mant-hora-paro-inicio');
-            fecha_paro_final = readDate('mant-fecha-paro-final');
-            hora_paro_final = readTime('mant-hora-paro-final');
-
-            fecha_intervencion_inicio = fecha_paro_inicio;
-            hora_intervencion_inicio = hora_paro_inicio;
-            fecha_intervencion_final = fecha_paro_final;
-            hora_intervencion_final = hora_paro_final;
-        } else {
-            // Operando: leer solo intervención, paro null
-            fecha_intervencion_inicio = readDate('mant-fecha-intervencion-inicio');
-            hora_intervencion_inicio = readTime('mant-hora-intervencion-inicio');
-            fecha_intervencion_final = readDate('mant-fecha-intervencion-final');
-            hora_intervencion_final = readTime('mant-hora-intervencion-final');
-
-            fecha_paro_inicio = null;
-            hora_paro_inicio = null;
-            fecha_paro_final = null;
-            hora_paro_final = null;
-        }
-    }
-    else if (isNoParo) {
-        // Si no hay paro, leer solo intervención
-        fecha_intervencion_inicio = readDate('mant-fecha-intervencion-inicio');
-        hora_intervencion_inicio = readTime('mant-hora-intervencion-inicio');
-        fecha_intervencion_final = readDate('mant-fecha-intervencion-final');
-        hora_intervencion_final = readTime('mant-hora-intervencion-final');
-
+    } else {
         fecha_paro_inicio = null;
         hora_paro_inicio = null;
         fecha_paro_final = null;
         hora_paro_final = null;
-    } else {
-        // Correctivo u otros: leer normalmente ambos campos
-        fecha_intervencion_inicio = readDate('mant-fecha-intervencion-inicio');
-        hora_intervencion_inicio = readTime('mant-hora-intervencion-inicio');
-        fecha_intervencion_final = readDate('mant-fecha-intervencion-final');
-        hora_intervencion_final = readTime('mant-hora-intervencion-final');
-
-        fecha_paro_inicio = readDate('mant-fecha-paro-inicio');
-        hora_paro_inicio = readTime('mant-hora-paro-inicio');
-        fecha_paro_final = readDate('mant-fecha-paro-final');
-        hora_paro_final = readTime('mant-hora-paro-final');
     }
 
     // Estado: "finalizado" si el checkbox está marcado, "continuidad" si no
@@ -211,55 +157,18 @@ function validar({ paro, intervencion }) {
     if (!req(paro.tipo_maquina)) errores.push('Tipo de máquina');
     if (!req(intervencion.tipo_mantenimiento)) errores.push('Tipo de mantenimiento');
 
-    const tipoMantLower = (intervencion.tipo_mantenimiento || '').toLowerCase();
-    const isPreventivo = tipoMantLower === 'preventivo';
-    const isCorrectivo = tipoMantLower === 'correctivo';
-    const isPredictivo = tipoMantLower === 'predictivo';
-    const isInspeccion = tipoMantLower === 'inspección';
     const paroValue = (paro.paro_maquina || '').toLowerCase();
 
-    // Si es preventivo, validar solo fechas y horas de PARO (intervención se duplicará)
-    if (isPreventivo) {
+    if (paroValue !== 'si' && paroValue !== 'no') errores.push('Paro de máquina');
+
+    if (!req(intervencion.fecha_intervencion_inicio)) errores.push('Fecha intervención inicio');
+    if (!req(intervencion.hora_intervencion_inicio)) errores.push('Hora intervención inicio');
+    if (!req(intervencion.fecha_intervencion_final)) errores.push('Fecha intervención final');
+    if (!req(intervencion.hora_intervencion_final)) errores.push('Hora intervención final');
+
+    if (paroValue === 'si') {
         if (!req(paro.fecha_paro_inicio)) errores.push('Fecha paro inicio');
         if (!req(paro.hora_paro_inicio)) errores.push('Hora paro inicio');
-    }
-    // Si es correctivo, validar ambos: intervención Y paro
-    else if (isCorrectivo) {
-        if (!req(intervencion.fecha_intervencion_inicio)) errores.push('Fecha intervención inicio');
-        if (!req(intervencion.hora_intervencion_inicio)) errores.push('Hora intervención inicio');
-        if (!req(intervencion.fecha_intervencion_final)) errores.push('Fecha intervención final');
-        if (!req(intervencion.hora_intervencion_final)) errores.push('Hora intervención final');
-
-        if (!req(paro.fecha_paro_inicio)) errores.push('Fecha paro inicio');
-        if (!req(paro.hora_paro_inicio)) errores.push('Hora paro inicio');
-    }
-    // Si es predictivo o inspección
-    else if (isPredictivo || isInspeccion) {
-        if (paroValue === 'si') {
-            // Si está detenido, validar solo paro (intervención se duplica)
-            if (!req(paro.fecha_paro_inicio)) errores.push('Fecha paro inicio');
-            if (!req(paro.hora_paro_inicio)) errores.push('Hora paro inicio');
-        } else {
-            // Si está operando, validar solo intervención (paro es null)
-            if (!req(intervencion.fecha_intervencion_inicio)) errores.push('Fecha intervención inicio');
-            if (!req(intervencion.hora_intervencion_inicio)) errores.push('Hora intervención inicio');
-            if (!req(intervencion.fecha_intervencion_final)) errores.push('Fecha intervención final');
-            if (!req(intervencion.hora_intervencion_final)) errores.push('Hora intervención final');
-        }
-    }
-    // Para otros tipos
-    else {
-        // Siempre validar intervención
-        if (!req(intervencion.fecha_intervencion_inicio)) errores.push('Fecha intervención inicio');
-        if (!req(intervencion.hora_intervencion_inicio)) errores.push('Hora intervención inicio');
-        if (!req(intervencion.fecha_intervencion_final)) errores.push('Fecha intervención final');
-        if (!req(intervencion.hora_intervencion_final)) errores.push('Hora intervención final');
-
-        // Solo validar paro si paro_maquina es "si"
-        if (paroValue === 'si') {
-            if (!req(paro.fecha_paro_inicio)) errores.push('Fecha paro inicio');
-            if (!req(paro.hora_paro_inicio)) errores.push('Hora paro inicio');
-        }
     }
 
     return errores;
@@ -314,10 +223,8 @@ function syncFieldsByTipoMantenimiento() {
     const tipoMantenimiento = (document.getElementById('mant-tipo-mantenimiento')?.value || '').trim().toLowerCase();
     const selectParo = document.getElementById('mant-paro');
 
-    const isPreventivo = tipoMantenimiento === 'preventivo';
-    const isCorrectivo = tipoMantenimiento === 'correctivo';
     const isPredictivo = tipoMantenimiento === 'predictivo';
-    const isInspeccion = tipoMantenimiento === 'inspección';
+    const isInspeccion = tipoMantenimiento === 'inspección' || tipoMantenimiento === 'inspeccion';
 
     // Mostrar/ocultar cuadro de repuestos
     const cuadroRepuestos = document.getElementById('cuadro-repuestos');
@@ -329,155 +236,37 @@ function syncFieldsByTipoMantenimiento() {
         }
     }
 
-    // Si es preventivo o correctivo, paro_maquina siempre es "si"
-    if (isPreventivo || isCorrectivo) {
-        if (selectParo) {
-            selectParo.value = 'si';
-            selectParo.disabled = true;
-        }
-    }
-    // Si es predictivo o inspección, habilitar el select de paro
-    else if (isPredictivo || isInspeccion) {
-        if (selectParo) {
-            selectParo.disabled = false;
-        }
-    }
-    else {
-        // Para otros tipos, habilitar el select de paro
-        if (selectParo) {
-            selectParo.disabled = false;
-        }
+    if (selectParo) {
+        selectParo.disabled = false;
     }
 
-    // Obtener contenedores de fecha/hora
     const contenedorIntervencion = document.querySelector('.datetime-intervencion');
-    const contenedorParo = document.querySelector('.datetime-paro');
-
-    // Si es preventivo: ocultar intervención, mostrar paro (modo espejo paro->intervención)
-    if (isPreventivo) {
-        if (contenedorIntervencion) contenedorIntervencion.style.display = 'none';
-        if (contenedorParo) contenedorParo.style.display = 'grid';
-        // Activar espejo inicial
-        mirrorFields();
-    }
-    // Si es correctivo: mostrar ambos
-    else if (isCorrectivo) {
-        if (contenedorIntervencion) contenedorIntervencion.style.display = 'grid';
-        if (contenedorParo) contenedorParo.style.display = 'grid';
-    }
-    // Si es predictivo o inspección, usar lógica basada en el valor de paro_maquina
-    else if (isPredictivo || isInspeccion) {
-        syncHorasByParo();
-    }
-    // Para otros tipos, mostrar intervención y usar la lógica normal de paro
-    else {
-        if (contenedorIntervencion) contenedorIntervencion.style.display = 'grid';
-        syncHorasByParo();
-    }
+    if (contenedorIntervencion) contenedorIntervencion.style.display = 'grid';
+    syncHorasByParo();
 }
 
 function syncHorasByParo() {
-    const tipoMantenimiento = (document.getElementById('mant-tipo-mantenimiento')?.value || '').trim().toLowerCase();
-
-    // Si es preventivo o correctivo, no hacer nada (se maneja en syncFieldsByTipoMantenimiento)
-    if (tipoMantenimiento === 'preventivo' || tipoMantenimiento === 'correctivo') {
-        return;
-    }
-
     const paro = (document.getElementById('mant-paro')?.value || '').trim().toLowerCase();
-    const isPredictivo = tipoMantenimiento === 'predictivo';
-    const isInspeccion = tipoMantenimiento === 'inspección';
 
     const contenedorIntervencion = document.querySelector('.datetime-intervencion');
     const contenedorParo = document.querySelector('.datetime-paro');
 
-    // Para predictivo e inspección
-    if (isPredictivo || isInspeccion) {
-        if (paro === 'si') {
-            // Máquina detenida: ocultar intervención, mostrar paro (modo espejo paro->intervención)
-            if (contenedorIntervencion) contenedorIntervencion.style.display = 'none';
-            if (contenedorParo) contenedorParo.style.display = 'grid';
-            // Activar espejo
-            mirrorFields();
-        } else {
-            // Máquina operando (no): mostrar intervención, ocultar paro
-            if (contenedorIntervencion) contenedorIntervencion.style.display = 'grid';
-            if (contenedorParo) contenedorParo.style.display = 'none';
-            // Limpiar campos de paro
-            ['mant-fecha-paro-inicio', 'mant-hora-paro-inicio', 'mant-fecha-paro-final', 'mant-hora-paro-final']
-                .forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) el.value = '';
-                });
-        }
-    }
-    // Para otros tipos
-    else {
-        if (paro === 'no') {
-            // Ocultar paro
-            if (contenedorParo) contenedorParo.style.display = 'none';
-            // Limpiar campos de paro
-            ['mant-fecha-paro-inicio', 'mant-hora-paro-inicio', 'mant-fecha-paro-final', 'mant-hora-paro-final']
-                .forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) el.value = '';
-                });
-        } else {
-            // Mostrar paro
-            if (contenedorParo) contenedorParo.style.display = 'grid';
-        }
+    if (contenedorIntervencion) contenedorIntervencion.style.display = 'grid';
+
+    if (paro === 'si') {
+        if (contenedorParo) contenedorParo.style.display = 'grid';
+    } else {
+        if (contenedorParo) contenedorParo.style.display = 'none';
+        ['mant-fecha-paro-inicio', 'mant-hora-paro-inicio', 'mant-fecha-paro-final', 'mant-hora-paro-final']
+            .forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
     }
 }
 
-// Función de espejo bidireccional universal
-// Copia valores del campo visible al campo oculto
-// NO copia si el contenedor destino está oculto (display: none)
 function mirrorFields() {
-    const tipoMantenimiento = (document.getElementById('mant-tipo-mantenimiento')?.value || '').trim().toLowerCase();
-    const paro = (document.getElementById('mant-paro')?.value || '').trim().toLowerCase();
-
-    const isPreventivo = tipoMantenimiento === 'preventivo';
-    const isPredictivo = tipoMantenimiento === 'predictivo';
-    const isInspeccion = tipoMantenimiento === 'inspección';
-
-    const contenedorIntervencion = document.querySelector('.datetime-intervencion');
-    const contenedorParo = document.querySelector('.datetime-paro');
-
-    // Solo activar espejo en estos casos específicos:
-    // - Preventivo (siempre) - paro -> intervención (intervención oculta)
-    // - Predictivo/Inspección con paro = "si" (detenido) - paro -> intervención (intervención oculta)
-    // NO aplicar espejo si es Predictivo/Inspección con paro = "no" porque paro debe ser null
-
-    // Verificar si debemos hacer espejo
-    if (isPreventivo) {
-        // Preventivo: copiar paro -> intervención (intervención está oculta)
-        if (!contenedorParo || contenedorParo.style.display === 'none') return;
-    } else if ((isPredictivo || isInspeccion) && paro === 'si') {
-        // Predictivo/Inspección detenido: copiar paro -> intervención (intervención está oculta)
-        if (!contenedorParo || contenedorParo.style.display === 'none') return;
-    } else {
-        // En cualquier otro caso, NO hacer espejo
-        return;
-    }
-
-    const pairs = [
-        { intervencion: 'mant-fecha-intervencion-inicio', paro: 'mant-fecha-paro-inicio' },
-        { intervencion: 'mant-hora-intervencion-inicio', paro: 'mant-hora-paro-inicio' },
-        { intervencion: 'mant-fecha-intervencion-final', paro: 'mant-fecha-paro-final' },
-        { intervencion: 'mant-hora-intervencion-final', paro: 'mant-hora-paro-final' }
-    ];
-
-    pairs.forEach(({ intervencion, paro }) => {
-        const intervencionEl = document.getElementById(intervencion);
-        const paroEl = document.getElementById(paro);
-
-        if (!intervencionEl || !paroEl) return;
-
-        // Para preventivo y predictivo/inspección con paro="si": copiar paro -> intervención
-        if (isPreventivo || ((isPredictivo || isInspeccion) && paro === 'si')) {
-            intervencionEl.value = paroEl.value;
-        }
-    });
+    // Ya no se espejan fechas: cualquier tipo de mantenimiento puede elegir paro si/no.
 }
 
 async function guardar(e) {
@@ -651,7 +440,12 @@ async function cargarTiposMantenimiento() {
 
         sel.innerHTML = '<option value="">Seleccionar tipo</option>';
 
-        tipos.forEach(tipo => {
+        const tiposConOtro = [...tipos];
+        if (!tiposConOtro.some(tipo => (tipo.tipo || '').trim().toLowerCase() === 'otro')) {
+            tiposConOtro.push({ id: 'otro-local', tipo: 'Otro' });
+        }
+
+        tiposConOtro.forEach(tipo => {
             const opt = document.createElement('option');
             opt.value = tipo.tipo.toLowerCase();
             opt.textContent = tipo.tipo;
@@ -786,7 +580,7 @@ function init() {
     // Event listener para tipo de mantenimiento (controla todo)
     document.getElementById('mant-tipo-mantenimiento')?.addEventListener('change', syncFieldsByTipoMantenimiento);
 
-    // Event listener para paro de máquina (solo actúa en predictivo e inspección)
+    // Event listener para paro de máquina
     document.getElementById('mant-paro')?.addEventListener('change', syncHorasByParo);
 
     // Event listeners para modo espejo bidireccional en tiempo real
